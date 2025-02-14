@@ -114,18 +114,19 @@ const DrinkDetail = () => {
             <div></div>
 
             <div>
-              <div className="space-y-4 border-b border-gray-400 pb-2">
+              <div className="grid grid-cols-3 gap-4 border-b border-gray-400 pb-2">
                 {drinkDetail?.customization.map((item, index) => (
                   <button
-                    className="inline-block text-center bg-gray-700 px-4 py-2 rounded-lg square-text transition-all duration-300 transform hover:bg-gray-800 hover:scale-95 hover:translate-y-2"
+                    className="text-center bg-gray-700 px-4 py-1.5 rounded-lg transition-colors duration-300 hover:bg-gray-800"
                     key={index}
                     onClick={() => handleDrinkPrice(index)}
                   >
                     <p>{item.size}</p>
-                    <>{item.price}</>
+                    <p>{item.price}</p>
                   </button>
                 ))}
               </div>
+
               <div>
                 <div className="flex justify-between my-3">
                   <p>Discount: </p>
