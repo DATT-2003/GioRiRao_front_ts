@@ -6,6 +6,7 @@ export interface DrinkSliceState {
   searchKey: string
   isDrinkDetailOpen: boolean
   drinkId: string
+  id: string
 }
 
 const initialState: DrinkSliceState = {
@@ -13,6 +14,7 @@ const initialState: DrinkSliceState = {
   searchKey: "",
   isDrinkDetailOpen: false,
   drinkId: "",
+  id: "",
 }
 
 export const drinkSlice = createAppSlice({
@@ -35,12 +37,16 @@ export const drinkSlice = createAppSlice({
     setDrinkId: create.reducer((state, action: PayloadAction<string>) => {
       state.drinkId = action.payload
     }),
+    setDrinkIdCart: create.reducer((state, action: PayloadAction<string>) => {
+      state.id = action.payload
+    }),
   }),
   selectors: {
     selectClickedCategory: drink => drink.clickedCategory,
     selectSearchKey: drink => drink.searchKey,
     selectIsDrinkDetailOpen: drink => drink.isDrinkDetailOpen,
     selectDrinkId: drink => drink.drinkId,
+    selectDrinkIdCart: drink => drink.id,
   },
 })
 
@@ -49,6 +55,7 @@ export const {
   setSearchKey,
   setIsDrinkDetailOpen,
   setDrinkId,
+  setDrinkIdCart,
 } = drinkSlice.actions
 
 export const {
@@ -56,4 +63,5 @@ export const {
   selectSearchKey,
   selectIsDrinkDetailOpen,
   selectDrinkId,
+  selectDrinkIdCart,
 } = drinkSlice.selectors

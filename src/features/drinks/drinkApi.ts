@@ -20,7 +20,7 @@ const drinkApi = {
   },
   async getDrinkDetail(drinkId: string): Promise<IDrink> {
     const response = await api.get(DrinkEndpoint.getDrinkById(drinkId))
-    // console.log("search drink by drink id drinkApi", response)
+    //console.log("search drink by drink id drinkApi", response)
     return response.data.drink
   },
 }

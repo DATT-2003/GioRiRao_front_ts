@@ -4,6 +4,7 @@ import DrinksManagement from "../../features/drinks/components/DrinksManagement"
 import { useAppSelector } from "../../app/hooks"
 import { selectPopUpTab } from "../../features/settings/settingSlice"
 import { Divide } from "lucide-react"
+import ToppingManagement from "../../features/topping/components/ToppingManagement"
 
 const SettingsPage = () => {
   const activePopUp = useAppSelector(selectPopUpTab)
@@ -17,11 +18,10 @@ const SettingsPage = () => {
       <div className="w-[28%]">
         <SettingsSidebar />
       </div>
-
-      {/* Main content area */}
+      h{/* Main content area */}
       <div className="w-[90%]">
         {activePopUp === "drinkManagement" && <DrinksManagement />}
-        {activePopUp === "toppingManagement" && <div>hellos</div>}
+        {activePopUp === "toppingManagement" && <ToppingManagement />}
       </div>
     </div>
   )

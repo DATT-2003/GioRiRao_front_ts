@@ -4,12 +4,16 @@ import { ITopping } from "../toppingTypes"
 import toppingApi from "../toppingApi"
 import CartItem from "../../cart/components/CartItem"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import { selectDrinkId, setIsDrinkDetailOpen } from "../../drinks/drinkSlice"
+import {
+  selectDrinkId,
+  selectDrinkIdCart,
+  setIsDrinkDetailOpen,
+} from "../../drinks/drinkSlice"
 import { addTopping, removeCartItem } from "../../cart/cartSlice"
 import drinkApi from "../../drinks/drinkApi"
 
 const ToppingsList = () => {
-  const drinkId = useAppSelector(selectDrinkId)
+  const id = useAppSelector(selectDrinkIdCart)
   const dispatch = useAppDispatch()
 
   const [toppings, setToppings] = useState<ITopping[]>([])
@@ -27,11 +31,11 @@ const ToppingsList = () => {
     dispatch(setIsDrinkDetailOpen(false))
   }
   const handleAddTopping = (topping: ITopping) => {
-    dispatch(addTopping({ drinkId, topping }))
+    dispatch(addTopping({ id, topping }))
   }
   const handleRemoveCartItem = () => {
-    if (drinkId) {
-      dispatch(removeCartItem({ drinkId }))
+    if (id) {
+      dispatch(removeCartItem({ id }))
       dispatch(setIsDrinkDetailOpen(false))
     }
   }
@@ -76,12 +80,12 @@ const ToppingsList = () => {
           className="w-2/5 bg-gray-800 border-2 border-red-500 px-6 py-3 rounded-md text-white text-lg font-semibold hover:bg-red-600 transition"
           onClick={handleRemoveCartItem}
         >
-          Back
+          Delete
         </button>
 
         {/* Nút Confirm */}
         <button
-          className="w-2/5 bg-red-600 px-6 py-3 rounded-md text-white text-lg font-semibold hover:bg-red-500 transition"
+          className="w-2/5 bg-red-500 px-6 py-3 rounded-md text-white text-lg font-semibold hover:bg-red-500 transition"
           onClick={handleClose}
         >
           Confirm
