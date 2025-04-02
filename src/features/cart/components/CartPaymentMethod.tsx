@@ -17,9 +17,7 @@ const CartPaymentMethod = () => {
   const cartTotalPrice = useAppSelector(selectCartTotalPrice)
   const dispatch = useAppDispatch()
   const [selectedMethod, setSelectedMethod] = useState("Cash")
-  const handleClose = () => {
-    dispatch(setIsCartComfirmationOpen({ isOpen: false }))
-  }
+
   const handleComfirmPayment = async () => {
     const items = convertCartItemsToOrderDetails(cartList)
     const order = {
@@ -39,6 +37,7 @@ const CartPaymentMethod = () => {
       console.log("why you wrong", newOrder)
     }
   }
+
   return (
     <div className="flex flex-col justify-between h-full">
       <div className="">
@@ -74,10 +73,7 @@ const CartPaymentMethod = () => {
       </div>
 
       <div>
-        <button
-          className="w-[48%] bg-gray-400 hover:bg-gray-500 h-10 rounded-lg mr-2"
-          onClick={handleClose}
-        >
+        <button className="w-[48%] bg-gray-400 hover:bg-gray-500 h-10 rounded-lg mr-2">
           Back
         </button>
         <button

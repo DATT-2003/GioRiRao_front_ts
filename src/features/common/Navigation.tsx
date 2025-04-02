@@ -12,16 +12,11 @@ import { NavLink } from "react-router-dom"
 interface NavItemProps {
   to: string
   Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>
-  onClick?: () => void
 }
-const handleLogout = () => {
-  localStorage.removeItem("isAuthenticated")
-  localStorage.removeItem("accessToken")
-}
-const NavItem = ({ to, Icon, onClick }: NavItemProps) => (
+
+const NavItem = ({ to, Icon }: NavItemProps) => (
   <NavLink
     to={to}
-    onClick={onClick}
     className={({ isActive }) =>
       `h-12 w-12 flex items-center justify-center rounded-lg transition-colors ${
         isActive ? "bg-rose-400 text-white" : "text-gray-400 hover:bg-gray-800"
@@ -50,7 +45,7 @@ const Navigation = () => (
 
     {/* Đẩy LogOut xuống dưới */}
     <div className="mt-auto">
-      <NavItem to="/login" onClick={handleLogout} Icon={LogOut} />
+      <NavItem to="/logout" Icon={LogOut} />
     </div>
   </nav>
 )

@@ -3,7 +3,6 @@ import { ITopping } from "../topping/toppingTypes"
 
 // type
 export interface ICarItem {
-  id?: IDrink["_id"]
   drink?: IDrink | null
   quantity?: number
   note?: string

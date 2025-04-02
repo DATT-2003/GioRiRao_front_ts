@@ -35,6 +35,15 @@ export const cartSlice = createAppSlice({
         saveCartState(state.cartItems)
         return
       }
+
+      const existingItemIndex = state.cartItems?.findIndex(
+        item => item.drink?._id === action.payload.drink?._id,
+      )
+
+      if (existingItemIndex !== -1) {
+        return
+      }
+      // console.log("payload createCart", action.payload)
       state.cartItems.push(action.payload)
 
       saveCartState(state.cartItems)
@@ -65,6 +74,7 @@ export const cartSlice = createAppSlice({
             state.cartItems[existingItemIndex].price! += t.price
           })
         }
+
         saveCartState(state.cartItems)
       },
     ),
@@ -94,13 +104,16 @@ export const cartSlice = createAppSlice({
       },
     ),
     addTopping: create.reducer(
-      (state, action: PayloadAction<{ id: string; topping: ITopping }>) => {
-        const { id, topping } = action.payload
+      (
+        state,
+        action: PayloadAction<{ drinkId: string; topping: ITopping }>,
+      ) => {
+        const { drinkId, topping } = action.payload
 
         const existingItemIndex = state.cartItems?.findIndex(
-          item => item.id === id,
+          item => item.drink?._id === drinkId,
         )
-        if (existingItemIndex === -1 || existingItemIndex === undefined) return
+
         // is topping already exist
         const existTopping = state.cartItems[existingItemIndex].toppings?.some(
           t => t._id === topping!._id,
@@ -115,11 +128,14 @@ export const cartSlice = createAppSlice({
       },
     ),
     removeTopping: create.reducer(
-      (state, action: PayloadAction<{ id: string; topping: ITopping }>) => {
-        const { id, topping } = action.payload
+      (
+        state,
+        action: PayloadAction<{ drinkId: string; topping: ITopping }>,
+      ) => {
+        const { drinkId, topping } = action.payload
 
         const existingItemIndex = state.cartItems?.findIndex(
-          item => item.id === id,
+          item => item.drink?._id === drinkId,
         )
 
         state.cartItems[existingItemIndex].price! -= topping.price
@@ -132,11 +148,11 @@ export const cartSlice = createAppSlice({
       },
     ),
     updateNote: create.reducer(
-      (state, action: PayloadAction<{ id: string; note: string }>) => {
-        const { id, note } = action.payload
+      (state, action: PayloadAction<{ drinkId: string; note: string }>) => {
+        const { drinkId, note } = action.payload
 
         const existingItemIndex = state.cartItems?.findIndex(
-          item => item.id === id,
+          item => item.drink?._id === drinkId,
         )
 
         state.cartItems[existingItemIndex].note = note
@@ -145,14 +161,18 @@ export const cartSlice = createAppSlice({
       },
     ),
     removeCartItem: create.reducer(
-      (state, action: PayloadAction<{ id: string }>) => {
-        const { id } = action.payload
-        state.cartItems = state.cartItems.filter(t => t.id !== id)
+      (state, action: PayloadAction<{ drinkId: string }>) => {
+        const { drinkId } = action.payload
+
+        const existingItemIndex = state.cartItems?.findIndex(
+          item => item.drink?._id === drinkId,
+        )
+
+        state.cartItems = state.cartItems.filter(t => t.drink?._id !== drinkId)
 
         saveCartState(state.cartItems)
       },
     ),
-    addConfirmpayment: create.reducer(state => {}),
     setIsCartComfirmationOpen: create.reducer(
       (state, action: PayloadAction<{ isOpen: boolean }>) => {
         const { isOpen } = action.payload
@@ -184,7 +204,7 @@ export const cartSlice = createAppSlice({
   }),
   selectors: {
     selectCartItems: cart => {
-      console.log("Select cart items", cart.cartItems)
+      // console.log("cart items", cart.cartItems)
       return cart.cartItems
     },
 
@@ -197,10 +217,10 @@ export const cartSlice = createAppSlice({
       return item?.priceIndex
     },
 
-    selectToppings: (cart, id) => {
+    selectToppings: (cart, drinkId) => {
       // console.log("cart.cartItems", cart.cartItems)
       const existingItemIndex = cart.cartItems?.findIndex(
-        item => item.id === id,
+        item => item.drink?._id === drinkId,
       )
 
       // console.log("existingItemIndex selectToppings", existingItemIndex)
@@ -218,11 +238,6 @@ export const cartSlice = createAppSlice({
     },
 
     selectCartTotalPrice: cart => {
-      if (!Array.isArray(cart.cartItems)) {
-        console.log("cart.cartItems", cart.cartItems)
-        return []
-      }
-
       return cart.cartItems
         ? cart.cartItems.reduce((totalP, cartItem) => {
             return totalP + (cartItem.price ?? 0) // Ensure price is not undefined

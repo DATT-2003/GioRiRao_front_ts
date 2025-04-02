@@ -1,5 +1,5 @@
 interface ICustomization {
-  size: "S" | "M" | "L"
+  size: "S" | "M" | "S"
   price: number
 }
 

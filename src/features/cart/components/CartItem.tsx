@@ -1,16 +1,11 @@
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import {
-  setDrinkId,
-  setDrinkIdCart,
-  setIsDrinkDetailOpen,
-} from "../../drinks/drinkSlice"
+import { setDrinkId, setIsDrinkDetailOpen } from "../../drinks/drinkSlice"
 import { IDrink } from "../../drinks/drinkTypes"
 import { ITopping } from "../../topping/toppingTypes"
 import { Trash } from "lucide-react"
 import { removeCartItem, selectIsCartComfirmationOpen } from "../cartSlice"
 
 interface CartItemProps {
-  id?: string
   drink?: IDrink | null
   quantity?: number
   note?: string
@@ -19,7 +14,6 @@ interface CartItemProps {
 }
 
 const CartItem = ({
-  id,
   drink,
   toppings,
   price,
@@ -29,46 +23,45 @@ const CartItem = ({
   const isCartComfirmationOpen = useAppSelector(selectIsCartComfirmationOpen)
   const dispatch = useAppDispatch()
 
-  const handleDrinkClick = (id: string) => {
+  const handleDrinkClick = (drinkId: string) => {
     if (isCartComfirmationOpen) return
-    dispatch(setDrinkIdCart(id))
+    dispatch(setDrinkId(drinkId))
     dispatch(setIsDrinkDetailOpen(true))
   }
 
-  const handleRemoveCartItem = (id: string) => {
-    dispatch(removeCartItem({ id }))
+  const handleRemoveCartItem = (drinkId: string) => {
+    dispatch(removeCartItem({ drinkId }))
   }
 
   return (
     <div className="mb-4">
       <div className="flex items-center gap-4 mb-4">
-        <div className="flex items-center justify-between w-full pr-2 bg-gray-900 rounded-lg">
-          <div
-            className="flex items-center justify-between w-full pr-4 bg-gray-900 rounded-lg"
-            onClick={() => handleDrinkClick(id!)}
-          >
-            <img
-              src={drink?.thumbnail}
-              alt={drink?.shortDescription}
-              className="w-12 h-12 rounded-lg object-cover"
-            />
-            <div>
-              <h4 className="text-white">{drink?.name}</h4>
-              <p className="text-gray-400">${price}</p>
-            </div>
-            <div className="flex ml-auto mr-2">
-              <p className="text-white w-10 h-10 text-center pt-2 rounded-lg bg-gray-700">
-                {quantity}
-              </p>
-            </div>
-          </div>
-          <Trash
-            className="text-red-300 hover:text-red-400 cursor-pointer "
-            onClick={() => handleRemoveCartItem(id!)}
-          />
+        <img
+          src={drink?.thumbnail}
+          alt={drink?.shortDescription}
+          className="w-12 h-12 rounded-lg object-cover"
+          onClick={() => handleDrinkClick(drink?._id!)}
+        />
+        <div className="flex-1" onClick={() => handleDrinkClick(drink?._id!)}>
+          <h4 className="text-white">{drink?.name}</h4>
+          <p className="text-gray-400">${price}</p>
         </div>
+
+        <div
+          className="flex items-center gap-2"
+          onClick={() => handleDrinkClick(drink?._id!)}
+        >
+          <p className="text-white w-10 h-10 text-center pt-2 rounded-lg bg-gray-700">
+            {quantity}
+          </p>
+          <p className="text-white w-10 h-10 text-center pt-2">{quantity}</p>
+        </div>
+        <Trash
+          className="text-red-300 hover:text-red-400"
+          onClick={() => handleRemoveCartItem(drink?._id!)}
+        ></Trash>
       </div>
-      <div onClick={() => handleDrinkClick(id!)}>
+      <div onClick={() => handleDrinkClick(drink?._id!)}>
         {note ? (
           <input
             type="text"
@@ -81,8 +74,8 @@ const CartItem = ({
         )}
         {toppings
           ? toppings?.map((t, index) => (
-              <div key={index} className=" mt-3 ">
-                <p className="bg-gray-700 w-[85%] h-10 py-2 px-2 rounded-lg overflow-hidden">
+              <div key={index} className=" mt-3">
+                <p className="bg-gray-700 w-[75%] h-10 py-2 px-2 rounded-lg overflow-hidden">
                   {t.name} <span>(+{t.price} VND)</span>
                 </p>
               </div>

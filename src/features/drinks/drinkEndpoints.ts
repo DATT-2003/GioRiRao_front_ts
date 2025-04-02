@@ -7,10 +7,6 @@ const DrinkEndpoint = {
   searchDrinks: (searchValue: string) =>
     `${DrinkBase}/search?name=${searchValue}`,
   getDrinkById: (id: string) => `${DrinkBase}/${id}`,
-  getAllDrinks: () => `${DrinkBase}`,
-  createDrink: () => `${DrinkBase}`,
-  updateDrink: (id: string) => `${DrinkBase}/${id}`,
-  deleteDrink: (id: string) => `${DrinkBase}/delete/${id}`,
 }
 
 export default DrinkEndpoint
