@@ -23,6 +23,25 @@ const drinkApi = {
     //console.log("search drink by drink id drinkApi", response)
     return response.data.drink
   },
+  async createDrink(drink: FormData) {
+    console.log("create drink drinkApi", drink)
+    const response = await api.post(DrinkEndpoint.createDrink(), drink, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+    return response.data
+  },
+  async getAllDrinks(): Promise<IDrink[]> {
+    const response = await api.get(DrinkEndpoint.getAllDrinks())
+    return response.data.docs
+  },
+  async updateDrink(drinkId: string, drink: FormData) {
+    const response = await api.patch(DrinkEndpoint.updateDrink(drinkId), drink)
+    return response.data
+  },
+  async deleteDrink(drinkId: string) {
+    const response = await api.patch(DrinkEndpoint.deleteDrink(drinkId))
+    return response.data
+  },
 }
 
 export default drinkApi

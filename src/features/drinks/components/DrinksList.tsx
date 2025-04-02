@@ -7,8 +7,6 @@ import {
   selectClickedCategory,
   selectSearchKey,
   setDrinkId,
-  setDrinkIdCart,
-  setIsDrinkDetailOpen,
 } from "../drinkSlice"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import { createCart } from "../../cart/cartSlice"

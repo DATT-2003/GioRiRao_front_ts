@@ -26,9 +26,6 @@ export const toppingSlice = createAppSlice({
         state.clickedCategory = action.payload
       },
     ),
-    updateTopping: create.reducer((state, action: PayloadAction<string>) => {
-      state.clickedCategory = action.payload
-    }),
   }),
 
   selectors: {

@@ -65,7 +65,6 @@ export const cartSlice = createAppSlice({
             state.cartItems[existingItemIndex].price! += t.price
           })
         }
-
         saveCartState(state.cartItems)
       },
     ),
@@ -185,7 +184,7 @@ export const cartSlice = createAppSlice({
   }),
   selectors: {
     selectCartItems: cart => {
-      console.log("cart items", cart.cartItems)
+      console.log("Select cart items", cart.cartItems)
       return cart.cartItems
     },
 
@@ -219,6 +218,11 @@ export const cartSlice = createAppSlice({
     },
 
     selectCartTotalPrice: cart => {
+      if (!Array.isArray(cart.cartItems)) {
+        console.log("cart.cartItems", cart.cartItems)
+        return []
+      }
+
       return cart.cartItems
         ? cart.cartItems.reduce((totalP, cartItem) => {
             return totalP + (cartItem.price ?? 0) // Ensure price is not undefined

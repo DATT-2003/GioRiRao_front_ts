@@ -9,6 +9,7 @@ const AddToppingModal = ({
   onCreate: () => void
 }) => {
   const [name, setName] = useState("")
+
   const [price, setPrice] = useState<number | "">("")
   const [image, setImage] = useState<File | null>(null)
   const [preview, setPreview] = useState<string | null>(null)
@@ -38,11 +39,16 @@ const AddToppingModal = ({
       formData.append("price", price.toString())
       formData.append("thumbnail", image)
 
-      await toppingApi.createTopping(formData)
+      const response = await toppingApi.createTopping(formData)
+      console.log("Response from API:", response) // 👉 Kiểm tra response
 
-      alert("Topping created successfully!")
-      onCreate() // Load lại danh sách topping
-      onClose() // Đóng modal
+      if (response && response.newTopping) {
+        alert("Topping created successfully!")
+        onCreate()
+        onClose()
+      } else {
+        alert("Tạo topping thành công nhưng không nhận được dữ liệu từ server!")
+      }
     } catch (error: any) {
       console.error(
         "Error creating topping:",
@@ -51,6 +57,8 @@ const AddToppingModal = ({
       alert(
         `Failed to create topping: ${error.response?.data?.message || error.message}`,
       )
+    } finally {
+      setLoading(false)
     }
   }
 
