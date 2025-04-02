@@ -7,7 +7,6 @@ import {
   selectClickedCategory,
   selectSearchKey,
   setDrinkId,
-  setIsDrinkDetailOpen,
 } from "../drinkSlice"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import { createCart } from "../../cart/cartSlice"
@@ -39,15 +38,15 @@ const DrinksList = () => {
 
   const handleDrinkClick = async (drinkId: string) => {
     dispatch(setDrinkId(drinkId))
-    dispatch(setIsDrinkDetailOpen(true))
+    //dispatch(setIsDrinkDetailOpen(true))
 
     const drinkDetail = await drinkApi.getDrinkDetail(drinkId)
-    const convertDrinkDetail = {
-      drinkId: drinkDetail._id,
-      
-    }
+    const now = new Date()
+    const formattedTime = `${now.getHours()}${now.getMinutes()}${now.getSeconds()}`
+    const uniqueId = `${drinkId}-${formattedTime}`
     dispatch(
       createCart({
+        id: uniqueId,
         drink: drinkDetail,
         quantity: 1,
         note: "",

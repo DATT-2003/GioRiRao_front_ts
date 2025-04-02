@@ -13,7 +13,6 @@ const CartList = () => {
   const dispatch = useAppDispatch()
 
   const handlePayment = (isOpen: boolean) => {
-    console.log("are you runni")
     dispatch(setIsCartComfirmationOpen({ isOpen }))
   }
 
@@ -23,17 +22,16 @@ const CartList = () => {
         <div className="flex justify-between mb-5">
           <h2 className="text-lg font-medium">Orders #34562</h2>
         </div>
-
         <div className="flex mb-5 text-[17px] pb-2 border-b">
           <p className="mr-[200px]">Item</p>
           <p className="mr-[25px]">Qty</p>
           <p>Price</p>
         </div>
-
         <div className="max-h-[300px] overflow-y-scroll hide-scrollbar">
           {cartList?.map((item, index) => (
             <CartItem
               key={index}
+              id={item.id}
               drink={item.drink}
               price={item.price}
               quantity={item.quantity}
@@ -52,8 +50,13 @@ const CartList = () => {
           </span>
         </div>
         <button
-          className="w-full bg-rose-400 text-white py-3 rounded-lg"
+          className={`w-full py-3 rounded-lg ${
+            !cartList || cartList.length === 0
+              ? "bg-gray-500 cursor-not-allowed"
+              : "bg-rose-400 text-white"
+          }`}
           onClick={() => handlePayment(true)}
+          disabled={!cartList || cartList.length === 0}
         >
           Continue to Payments
         </button>

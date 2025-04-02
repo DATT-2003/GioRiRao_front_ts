@@ -2,16 +2,16 @@ import React from "react"
 import { Trash } from "lucide-react"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import { removeTopping, selectToppings } from "../../cart/cartSlice"
-import { selectDrinkId } from "../../drinks/drinkSlice"
+import { selectDrinkId, selectDrinkIdCart } from "../../drinks/drinkSlice"
 import { ITopping } from "../toppingTypes"
 
 const AddingToppingList = () => {
-  const drinkId = useAppSelector(selectDrinkId)
-  const toppings = useAppSelector(cart => selectToppings(cart, drinkId))
+  const id = useAppSelector(selectDrinkIdCart)
+  const toppings = useAppSelector(cart => selectToppings(cart, id))
   const dispatch = useAppDispatch()
 
-  const handleDeleteTopping = (topping: ITopping, drinkId: string) => {
-    dispatch(removeTopping({ drinkId, topping }))
+  const handleDeleteTopping = (topping: ITopping, id: string) => {
+    dispatch(removeTopping({ id, topping }))
   }
 
   return (
@@ -31,7 +31,7 @@ const AddingToppingList = () => {
             </p>
           </div>
 
-          <button onClick={() => handleDeleteTopping(t, drinkId)}>
+          <button onClick={() => handleDeleteTopping(t, id)}>
             <Trash />
           </button>
         </div>

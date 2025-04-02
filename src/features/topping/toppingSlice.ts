@@ -6,6 +6,7 @@ export interface ToppingSliceState {
   searchKey: string
   isDrinkDetailOpen: boolean
   drinkId: string
+  id: string
 }
 
 const initialState: ToppingSliceState = {
@@ -13,6 +14,7 @@ const initialState: ToppingSliceState = {
   searchKey: "",
   isDrinkDetailOpen: false,
   drinkId: "",
+  id: "",
 }
 
 export const toppingSlice = createAppSlice({
@@ -25,6 +27,7 @@ export const toppingSlice = createAppSlice({
       },
     ),
   }),
+
   selectors: {
     selectClickedCategory: drink => drink.clickedCategory,
   },
