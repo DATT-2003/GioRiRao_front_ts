@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import { selectDrinkId, setIsDrinkDetailOpen } from "../drinkSlice"
+import {
+  selectDrinkId,
+  selectDrinkIdCart,
+  setIsDrinkDetailOpen,
+} from "../drinkSlice"
 import drinkApi from "../drinkApi"
 import { IDrink } from "../drinkTypes"
 import DrinkItemDetail from "./DrinkItemDetail"
@@ -13,18 +17,18 @@ import {
 import AddingToppingList from "../../topping/components/AddingToppingList"
 
 const DrinkDetail = () => {
+  const id = useAppSelector(selectDrinkIdCart)
   const drinkId = useAppSelector(selectDrinkId)
-  const cartItem = useAppSelector(cart => selectCartItem(cart, drinkId))
+  const cartItem = useAppSelector(cart => selectCartItem(cart, id))
   const dispatch = useAppDispatch()
   const [drinkDetail, setDrinkDetail] = useState<IDrink | null>(null)
 
   useEffect(() => {
     async function loadDrinkDetail() {
+      console.log("drinkid", drinkId)
       const drink = await drinkApi.getDrinkDetail(drinkId ? drinkId : "")
-      // console.log("drink", drink)
       setDrinkDetail(drink)
     }
-
     loadDrinkDetail()
   }, [drinkId])
 
@@ -55,8 +59,7 @@ const DrinkDetail = () => {
 
   const handleNoteChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value
-
-    dispatch(updateNote({ drinkId, note: value }))
+    dispatch(updateNote({ id, note: value }))
   }
 
   return (
@@ -87,30 +90,22 @@ const DrinkDetail = () => {
 
               <AddingToppingList />
             </div>
-
-            {/* <div className="bg-red-800">
-              <input
-                type="text"
-                placeholder="Order Note"
-                className="bg-gray-700 rounded-lg w-full pl-5 py-2"
-              />
-            </div> */}
-
             <div></div>
 
             <div>
-              <div className="space-y-4 border-b border-gray-400 pb-2">
+              <div className="grid grid-cols-3 gap-4 border-b border-gray-400 pb-2">
                 {drinkDetail?.customization.map((item, index) => (
                   <button
-                    className="inline-block text-center bg-gray-700 px-4 py-2 rounded-lg square-text transition-all duration-300 transform hover:bg-gray-800 hover:scale-95 hover:translate-y-2"
+                    className="text-center bg-gray-700 px-4 py-1.5 rounded-lg transition-colors duration-300 hover:bg-gray-800"
                     key={index}
                     onClick={() => handleDrinkPrice(index)}
                   >
                     <p>{item.size}</p>
-                    <>{item.price}</>
+                    <p>{item.price}</p>
                   </button>
                 ))}
               </div>
+
               <div>
                 <div className="flex justify-between my-3">
                   <p>Discount: </p>
