@@ -6,13 +6,13 @@ export interface SettingSliceState {
 }
 
 const loadPopUpTab = () => {
-  const state = sessionStorage.getItem("cartState")
+  const state = sessionStorage.getItem("settingState")
   return state ? JSON.parse(state) : "drinkManagement"
 }
 
 const savePopUpTab = (state: string | "drinkManagement") => {
   const stringtifyState = JSON.stringify(state)
-  sessionStorage.setItem("cartState", stringtifyState)
+  sessionStorage.setItem("settingState", stringtifyState)
 }
 
 const initialState: SettingSliceState = {

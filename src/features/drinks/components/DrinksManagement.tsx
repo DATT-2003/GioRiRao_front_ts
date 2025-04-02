@@ -2,7 +2,7 @@ import React from "react"
 
 const DrinksManagement = () => {
   return (
-    <div className="p-6 bg-gray-900 relative top-[70px] left-16 rounded-lg w-[90%] h-[85%] flex flex-col justify-between overflow-hidden">
+    <div className="p-6 bg-gray-900 relative top-[70px] left-16 rounded-lg w-[ô0%] h-[85%] flex flex-col justify-between overflow-hidden">
       <div>
         <div className="flex items-center justify-between mb-4">
           <p>Drink Management</p>

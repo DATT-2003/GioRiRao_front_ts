@@ -1,18 +1,3 @@
-/**
- * We gonnna do a pop up for drink detail
- *
- * We will have a state to know if the modal is open or not: isOpen
- * and isOpen will inside drinkSlice
- * If isOpen is true, then modal is open, otherwise close
- * The initial value of isOpen is false
- *
- * In the DrinksList, when user click on specific drink, we will make the isOpen true
- * We also want to take the drink id and pass it to the drinkSlice
- * so modal can get that id to get drink detail from back end and show to user
- *
- *
- */
-
 import React, { useEffect, useState } from "react"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
 import { selectDrinkId, setIsDrinkDetailOpen } from "../drinkSlice"
