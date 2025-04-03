@@ -23,7 +23,7 @@ export interface IDrink {
   shortDescription: string
   slug?: string
   thumbnail: string
-  images?: IImage[]
+  // images?: IImage[]
   ingredients?: IIngredient[]
   recipe?: string
   flags: {

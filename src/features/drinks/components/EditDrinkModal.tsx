@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import drinkApi from "../drinkApi"
 import { IDrink } from "../drinkTypes"
 
-type SizeKey = "M" | "S" | "L"
+type SizeKey = "S" | "M" | "L"
 
 interface ICustomization {
   size: "S" | "M" | "L"
@@ -68,12 +68,12 @@ const EditDrinkModal = ({ drink, onClose, onUpdate }: EditDrinkModalProps) => {
   )
 
   // Images: tích lũy các ảnh update (ban đầu dùng ảnh cũ nếu có)
-  const [imageFiles, setImageFiles] = useState<File[]>([])
-  const [imagePreviews, setImagePreviews] = useState<string[]>(
-    drink.images
-      ? drink.images.sort((a, b) => a.order - b.order).map(img => img.url)
-      : [],
-  )
+  // const [imageFiles, setImageFiles] = useState<File[]>([])
+  // const [imagePreviews, setImagePreviews] = useState<string[]>(
+  //   drink.images
+  //     ? drink.images.sort((a, b) => a.order - b.order).map(img => img.url)
+  //     : [],
+  // )
 
   const [loading, setLoading] = useState(false)
 
@@ -87,14 +87,14 @@ const EditDrinkModal = ({ drink, onClose, onUpdate }: EditDrinkModalProps) => {
   }
 
   // Xử lý file images (tích lũy ảnh mới vào danh sách)
-  const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const newFiles = Array.from(e.target.files)
-      setImageFiles(prev => [...prev, ...newFiles])
-      const newPreviews = newFiles.map(file => URL.createObjectURL(file))
-      setImagePreviews(prev => [...prev, ...newPreviews])
-    }
-  }
+  // const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files) {
+  //     const newFiles = Array.from(e.target.files)
+  //     setImageFiles(prev => [...prev, ...newFiles])
+  //     const newPreviews = newFiles.map(file => URL.createObjectURL(file))
+  //     setImagePreviews(prev => [...prev, ...newPreviews])
+  //   }
+  // }
 
   const handleAddTag = () => {
     if (tagInput.trim()) {
@@ -179,7 +179,7 @@ const EditDrinkModal = ({ drink, onClose, onUpdate }: EditDrinkModalProps) => {
       !recipe ||
       selectedCustomizations.length === 0 ||
       (!thumbnailFile && !thumbnailPreview) ||
-      (imagePreviews.length === 0 && imageFiles.length === 0) ||
+      // (imagePreviews.length === 0 && imageFiles.length === 0) ||
       ingredients.length === 0
     ) {
       alert("Vui lòng nhập đầy đủ thông tin và upload ảnh!")
@@ -203,8 +203,8 @@ const EditDrinkModal = ({ drink, onClose, onUpdate }: EditDrinkModalProps) => {
       if (thumbnailFile) {
         formData.append("thumbnail", thumbnailFile)
       }
-      // Thêm cả file ảnh mới
-      imageFiles.forEach(file => formData.append("images", file))
+      // // Thêm cả file ảnh mới
+      // imageFiles.forEach(file => formData.append("images", file))
 
       // Debug FormData
       for (let [key, value] of formData.entries()) {
@@ -266,13 +266,18 @@ const EditDrinkModal = ({ drink, onClose, onUpdate }: EditDrinkModalProps) => {
             onChange={e => setShortDescription(e.target.value)}
             className="p-2 rounded-md outline-none bg-gray-700 text-white"
           />
-          <input
-            type="text"
-            placeholder="Category"
+          <select
             value={category}
             onChange={e => setCategory(e.target.value)}
             className="p-2 rounded-md outline-none bg-gray-700 text-white"
-          />
+          >
+            <option value="">Select Category</option>
+            <option value="coffee">Coffee</option>
+            <option value="tea">Tea</option>
+            <option value="smoothie">Smoothie</option>
+            <option value="juice">Juice</option>
+            <option value="others">Others</option>
+          </select>
 
           {/* Tags */}
           <div>
@@ -316,7 +321,7 @@ const EditDrinkModal = ({ drink, onClose, onUpdate }: EditDrinkModalProps) => {
           <div>
             <label className="text-white">Sizes & Prices:</label>
             <div className="grid grid-cols-3 gap-4 mt-2">
-              {(["M", "S", "L"] as SizeKey[]).map(s => (
+              {(["S", "M", "L"] as SizeKey[]).map(s => (
                 <div key={s} className="flex flex-col items-center">
                   <label className="text-white flex items-center gap-1">
                     <input
@@ -429,7 +434,7 @@ const EditDrinkModal = ({ drink, onClose, onUpdate }: EditDrinkModalProps) => {
             )}
           </div>
 
-          {/* Images */}
+          {/* Images
           <div>
             <label className="text-white">Images (Multiple Images):</label>
             <input
@@ -448,7 +453,7 @@ const EditDrinkModal = ({ drink, onClose, onUpdate }: EditDrinkModalProps) => {
                 />
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* Nút Delete bên trái, Cancel & Update bên phải */}
           <div className="flex justify-between">
