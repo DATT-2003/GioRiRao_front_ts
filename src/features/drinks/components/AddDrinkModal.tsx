@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import drinkApi from "../drinkApi"
 import { IDrink } from "../drinkTypes"
 
-type SizeKey = "M" | "S" | "L"
+type SizeKey = "S" | "M" | "L"
 
 interface ICustomization {
   size: "S" | "M" | "L"
@@ -54,9 +54,9 @@ const AddDrinkModal = ({
   const [thumbnailFile, setThumbnailFile] = useState<File | null>(null)
   const [thumbnailPreview, setThumbnailPreview] = useState<string | null>(null)
 
-  // Images: nhận nhiều ảnh, lưu tích lũy
-  const [imageFiles, setImageFiles] = useState<File[]>([])
-  const [imagePreviews, setImagePreviews] = useState<string[]>([])
+  // // Images: nhận nhiều ảnh, lưu tích lũy
+  // const [imageFiles, setImageFiles] = useState<File[]>([])
+  // const [imagePreviews, setImagePreviews] = useState<string[]>([])
 
   const [loading, setLoading] = useState(false)
 
@@ -69,15 +69,15 @@ const AddDrinkModal = ({
     }
   }
 
-  // Xử lý file images
-  const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const newFiles = Array.from(e.target.files)
-      setImageFiles(prev => [...prev, ...newFiles])
-      const newPreviews = newFiles.map(file => URL.createObjectURL(file))
-      setImagePreviews(prev => [...prev, ...newPreviews])
-    }
-  }
+  // // Xử lý file images
+  // const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   if (e.target.files) {
+  //     const newFiles = Array.from(e.target.files)
+  //     setImageFiles(prev => [...prev, ...newFiles])
+  //     const newPreviews = newFiles.map(file => URL.createObjectURL(file))
+  //     setImagePreviews(prev => [...prev, ...newPreviews])
+  //   }
+  // }
 
   // Xử lý tag
   const handleAddTag = () => {
@@ -145,7 +145,7 @@ const AddDrinkModal = ({
       !recipe ||
       selectedCustomizations.length === 0 ||
       !thumbnailFile ||
-      imageFiles.length === 0 ||
+      // imageFiles.length === 0 ||
       ingredients.length === 0
     ) {
       alert("Vui lòng nhập đầy đủ thông tin và upload ảnh!")
@@ -166,7 +166,7 @@ const AddDrinkModal = ({
       formData.append("ingredients", JSON.stringify(ingredients))
       formData.append("recipe", recipe)
       formData.append("thumbnail", thumbnailFile)
-      imageFiles.forEach(file => formData.append("images", file))
+      // imageFiles.forEach(file => formData.append("images", file))
 
       // In ra FormData để kiểm tra (chỉ dùng cho debug)
       for (let [key, value] of formData.entries()) {
@@ -200,7 +200,13 @@ const AddDrinkModal = ({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-gray-800 p-6 rounded-lg w-2/5 max-h-screen overflow-y-auto">
+      <div
+        className="bg-gray-800 p-6 rounded-lg w-2/5 h-[90%] overflow-y-auto"
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+        }}
+      >
         <h2 className="text-2xl text-white mb-4">Add New Drink</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {/* Các input cơ bản */}
@@ -282,7 +288,7 @@ const AddDrinkModal = ({
           <div>
             <label className="text-white">Sizes & Prices:</label>
             <div className="grid grid-cols-3 gap-4 mt-2">
-              {(["M", "S", "L"] as SizeKey[]).map(s => (
+              {(["S", "M", "L"] as SizeKey[]).map(s => (
                 <div key={s} className="flex flex-col items-center">
                   <label className="text-white flex items-center gap-1">
                     <input
@@ -396,7 +402,7 @@ const AddDrinkModal = ({
           </div>
 
           {/* Images */}
-          <div>
+          {/* <div>
             <label className="text-white">Images (Multiple Images):</label>
             <input
               type="file"
@@ -414,7 +420,7 @@ const AddDrinkModal = ({
                 />
               ))}
             </div>
-          </div>
+          </div> */}
 
           {/* Submit & Cancel Buttons */}
           <div className="flex justify-end gap-2">
