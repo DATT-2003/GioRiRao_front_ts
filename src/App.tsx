@@ -4,6 +4,7 @@ import Navigation from "./features/common/Navigation"
 import LoginPage from "./pages/authentication/LoginPage"
 import ProtectedRoute from "./features/authentication/components/ProtectedRoute"
 import SettingsPage from "./pages/setting/SettingsPage"
+import OrderListPage from "./pages/orderchecklist/OrderListPage"
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const MainContent = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/" element={<Home />} />
             <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/Orderlist" element={<OrderListPage />} />
           </Route>
         </Routes>
       </div>

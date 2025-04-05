@@ -5,6 +5,8 @@ import { drinkSlice } from "../features/drinks/drinkSlice"
 import { authSlice } from "../features/authentication/authSlice"
 import { cartSlice } from "../features/cart/cartSlice"
 import { settingSlice } from "../features/settings/settingSlice"
+import { orderlistSlice } from "../features/orderlist/orderSlice"
+
 
 // `combineSlices` automatically combines the reducers using
 // their `reducerPath`s, therefore we no longer need to call `combineReducers`.
@@ -13,6 +15,7 @@ const rootReducer = combineSlices(
   authSlice,
   cartSlice,
   settingSlice,
+  orderlistSlice
 )
 // Infer the `RootState` type from the root reducer
 export type RootState = ReturnType<typeof rootReducer>
