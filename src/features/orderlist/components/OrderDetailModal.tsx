@@ -76,7 +76,7 @@ const OrderDetailModal = ({ order, onClose, onMarkDone }: Props) => {
                   {item.note && <p>Note: {item.note}</p>}
                   {item.toppings?.length > 0 && (
                     <p>
-                      Toppings: {item.toppings.map((top) => `${top.name} (x${top.quantity})`).join(", ")}
+                      Toppings: {item.toppings.map((t) => `${t.name} (${t.quantity ?? "x1"})`).join(", ")}
                     </p>
                   )}
 
