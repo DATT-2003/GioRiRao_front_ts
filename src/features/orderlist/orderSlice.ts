@@ -16,13 +16,14 @@ const initialState: OrderListState = {
   };
   
 
-export const fetchOrders = createAsyncThunk(
+  export const fetchOrders = createAsyncThunk(
     "orderlist/fetchOrders",
     async (storeId: string) => {
-      const orders = await orderlistApi.getPendingOrders(storeId);
-      return orders;
+      const res = await orderlistApi.getPendingOrders(storeId);
+      return res; // res phải là array chứa toàn bộ đơn "PENDING"
     }
   );
+  
   
 export const markAsDone = createAsyncThunk("orderlist/markAsDone", async (orderId: string) => {
   await orderlistApi.markOrderAsDone(orderId);
