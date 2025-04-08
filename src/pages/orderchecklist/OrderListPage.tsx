@@ -1,69 +1,87 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { fetchOrders, markAsDone } from "../../features/orderlist/orderSlice";
+import {
+  fetchOrders,
+  markAsDone,
+} from "../../features/orderlist/orderSlice";
 import { IOrder } from "../../features/orderlist/components/orderlistTypes";
-import OrderDetailModal from "../../features/orderlist/components/OrderDetailModal";
 
 const OrderListPage = () => {
   const dispatch = useAppDispatch();
   const { orders, loading, error } = useAppSelector((state) => state.orderlist);
-  const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
 
   useEffect(() => {
     const storeId = localStorage.getItem("storeId");
-    if (storeId) {
+
+    if (storeId && /^[0-9a-fA-F]{24}$/.test(storeId)) {
       dispatch(fetchOrders(storeId));
+    } else {
+      console.error(" Invalid or missing storeId in localStorage");
     }
   }, [dispatch]);
 
+  const handleCheckboxChange = (orderId: string) => {
+    dispatch(markAsDone(orderId));
+  };
+
+  //  Sắp xếp đơn: PENDING trước, COMPLETED sau
   const sortedOrders = Array.isArray(orders)
-    ? [...orders].sort((a, b) => {
-        if (a.status === "PENDING" && b.status !== "PENDING") return -1;
-        if (a.status !== "PENDING" && b.status === "PENDING") return 1;
-        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
-      })
-    : [];
+  ? [...orders].sort((a, b) => {
+      if (a.status === "PENDING" && b.status !== "PENDING") return -1;
+      if (a.status !== "PENDING" && b.status === "PENDING") return 1;
+      return 0;
+    })
+  : [];
+
 
   return (
-    <div className="min-h-screen bg-background p-8 text-foreground">
-      <h1 className="text-3xl font-semibold mb-6">Order Checklist</h1>
+    <div className="p-6 text-white">
+      <h1 className="text-2xl font-bold mb-4">Order Checklist</h1>
 
-      {loading && <p>Loading...</p>}
-      {error && <p className="text-destructive">Error: {error}</p>}
-
-      {!loading && sortedOrders.length === 0 && (
-        <p className="text-muted-foreground">No orders found for this store.</p>
-      )}
-
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {sortedOrders.map((order) => (
+      {loading && <p className="text-gray-400">Loading orders...</p>}
+      {error && <p className="text-red-400">Error: {error}</p>}
+      {!loading && sortedOrders.length === 0 && (<p className="text-gray-400">No orders found.</p>)}
+        
+      <div className="space-y-4">
+        {sortedOrders.map((order: IOrder) => (
           <div
             key={order._id}
-            onClick={() => setSelectedOrder(order)}
-            className={`rounded-xl border p-4 shadow-sm transition hover:shadow-md cursor-pointer ${
+            className={`flex items-center justify-between p-4 rounded-lg transition ${
               order.status === "COMPLETED"
-                ? "bg-muted text-muted-foreground"
-                : "bg-card hover:bg-accent"
+                ? "bg-gray-700 opacity-60"
+                : "bg-gray-800 hover:bg-gray-700"
             }`}
           >
-            <div className="font-semibold text-lg">{order.code}</div>
-            <div className="text-sm text-muted-foreground">
-              {new Date(order.createdAt).toLocaleString()}
+            <div>
+              <p className="font-semibold text-lg">{order.code}</p>
+              <p className="text-sm text-gray-400">
+                Payment: {order.paymentMethod} | Total:{" "}
+                {order.total.toLocaleString()}₫
+              </p>
+              <p className="text-xs text-gray-500">
+                Created at: {new Date(order.createdAt).toLocaleString()}
+              </p>
             </div>
-            <div className="mt-2 text-sm font-medium">
-              {order.status === "COMPLETED" ? "✅ Done" : "⏳ Waiting"}
+
+            <div className="flex items-center gap-2">
+              <label className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={order.status === "COMPLETED"}
+                  onChange={() => handleCheckboxChange(order._id)}
+                  className="accent-pink-500 w-5 h-5"
+                />
+                <span className="text-sm">
+                  {order.status === "COMPLETED"
+                    ? "Completed"
+                    : "Mark as done"}
+                </span>
+                
+              </label>
             </div>
           </div>
         ))}
       </div>
-
-      {selectedOrder && (
-        <OrderDetailModal
-          order={selectedOrder}
-          onClose={() => setSelectedOrder(null)}
-          onMarkDone={(orderId) => dispatch(markAsDone(orderId))}
-        />
-      )}
     </div>
   );
 };
