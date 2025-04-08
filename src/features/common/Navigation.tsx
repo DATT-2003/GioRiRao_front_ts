@@ -44,7 +44,7 @@ const Navigation = () => (
       <NavItem to="/" Icon={Home} />
       <NavItem to="/history" Icon={History} />
       <NavItem to="/messages" Icon={Mail} />
-      <NavItem to="/Orderlist" Icon={Bell} />
+      <NavItem to="/notifications" Icon={Bell} />
       <NavItem to="/settings" Icon={Settings} />
     </div>
 
