@@ -26,7 +26,7 @@ const CartPaymentMethod = () => {
       createdBy: "677fa3d96ee79a6d5eed1f41",
       storeId: "6780d1c957dfc98e89675b55",
       items,
-      paymentMethod: selectedMethod as "Cash" | "CARD" | "MOBILE_PAYMENT",
+      paymentMethod: selectedMethod as "Cash" | "MOBILE_PAYMENT",
       total: cartTotalPrice,
     }
     const newOrder = await orderApi.createOrder(order)

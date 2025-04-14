@@ -21,14 +21,8 @@ export interface IOrder {
   createdBy?: string
   storeId: string
   items: IOrderDetail[]
-  onlineStatus?:
-    | "PENDING"
-    | "CONFIRMED"
-    | "PREPARING"
-    | "READY"
-    | "DELIVERED"
-    | "CANCELLED"
-  paymentMethod: "Cash" | "CARD" | "MOBILE_PAYMENT"
+  onlineStatus?: "PENDING" | "COMPLETED" | "CANCELLED"
+  paymentMethod: "Cash" | "MOBILE_PAYMENT"
   total: number
   createdAt?: Date
   updatedAt?: Date
