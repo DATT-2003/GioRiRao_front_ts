@@ -21,7 +21,7 @@ const managementApi = {
   },
   async getStaffById(staffId: string): Promise<IStaff> {
     const response = await api.get(ManagementEndpoint.getStaffById(staffId))
-    //console.log("get staff by id managementApi", response.data.data)
+    // console.log("get staff by id managementApi", response.data.data)
     return response.data.data
   },
   async createStaff(data: FormData): Promise<IStaff> {

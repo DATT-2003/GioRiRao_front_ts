@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { ICity, IArea, IStore, IStaff } from "../managementTypes"
 import managementApi from "../managementApi"
 import { useDispatch } from "react-redux"
-import { setPopUpTab } from "../managementSlice"
+import { setPopUpTab, setSelectedStoreStaffInfo } from "../managementSlice"
 import { useNavigate } from "react-router-dom"
 
 const StoreManagement = () => {
@@ -190,7 +190,15 @@ const StoreManagement = () => {
                 <strong>Người quản lý:</strong>{" "}
                 {manager ? (
                   <span
-                    onClick={() => dispatch(setPopUpTab("staffManagement"))}
+                    onClick={() => {
+                      dispatch(
+                        setSelectedStoreStaffInfo({
+                          staffIds: storeDetail?.staffs || [],
+                          managerId: storeDetail?.managerId || null,
+                        }),
+                      )
+                      dispatch(setPopUpTab("staffManagement"))
+                    }}
                     className="text-blue-400 hover:underline cursor-pointer"
                   >
                     {manager.name}
@@ -203,7 +211,15 @@ const StoreManagement = () => {
 
             <div
               className="bg-gray-700 p-4 rounded shadow cursor-pointer"
-              onClick={() => dispatch(setPopUpTab("staffManagement"))}
+              onClick={() => {
+                dispatch(
+                  setSelectedStoreStaffInfo({
+                    staffIds: storeDetail?.staffs || [],
+                    managerId: storeDetail?.managerId || null,
+                  }),
+                )
+                dispatch(setPopUpTab("staffManagement"))
+              }}
             >
               <h2 className="text-lg font-semibold mb-2">
                 Danh Sách Nhân Viên
