@@ -47,7 +47,7 @@ const StaffManagement = () => {
 
   const handleCreateStaff = () => navigate("/management/addstaff")
   const handleViewStaff = (staffId: string) =>
-    navigate(`/management/staff/${staffId}`)
+    navigate(`/management/information/${staffId}`)
   const handleEditStaff = (staffId: string) =>
     navigate(`/management/editstaff/${staffId}`)
   const handleBackToStore = () => dispatch(setPopUpTab("storeManagement"))
