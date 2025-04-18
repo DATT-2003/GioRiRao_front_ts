@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import managementApi from "../managementApi"
 import { IArea, ICity, IStaff, IStore } from "../managementTypes"
+import { MapPin, Phone, AtSign, User, Users2, Plus } from "lucide-react"
 
 const UpdateStore = () => {
   const { id } = useParams<{ id: string }>()
@@ -84,7 +85,6 @@ const UpdateStore = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      // Loại bỏ cityId khỏi dữ liệu gửi
       const { cityId, ...payload } = formData
       await managementApi.updateStore(id!, payload)
       alert("Cập nhật cửa hàng thành công!")
@@ -112,10 +112,13 @@ const UpdateStore = () => {
 
       <form
         onSubmit={handleSubmit}
-        className="text-white p-6 space-y-4 max-w-2xl mx-auto"
+        className="text-white p-6 space-y-6 max-w-2xl mx-auto"
       >
         <div>
-          <label className="block font-semibold mb-1">Tên cửa hàng</label>
+          <label className="block font-semibold mb-1 flex items-center">
+            <User className="w-5 h-5 mr-2 text-yellow-400" />
+            Tên cửa hàng
+          </label>
           <input
             type="text"
             name="name"
@@ -126,7 +129,10 @@ const UpdateStore = () => {
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Địa chỉ</label>
+          <label className="block font-semibold mb-1 flex items-center">
+            <MapPin className="w-5 h-5 mr-2 text-yellow-400" />
+            Địa chỉ
+          </label>
           <input
             type="text"
             name="address"
@@ -137,7 +143,10 @@ const UpdateStore = () => {
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Số điện thoại</label>
+          <label className="block font-semibold mb-1 flex items-center">
+            <Phone className="w-5 h-5 mr-2 text-yellow-400" />
+            Số điện thoại
+          </label>
           <input
             type="text"
             name="phone"
@@ -148,7 +157,10 @@ const UpdateStore = () => {
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Email</label>
+          <label className="block font-semibold mb-1 flex items-center">
+            <AtSign className="w-5 h-5 mr-2 text-yellow-400" />
+            Email
+          </label>
           <input
             type="email"
             name="email"
@@ -159,7 +171,10 @@ const UpdateStore = () => {
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Thành phố</label>
+          <label className="block font-semibold mb-1 flex items-center">
+            <MapPin className="w-5 h-5 mr-2 text-yellow-400" />
+            Thành phố
+          </label>
           <select
             name="cityId"
             value={formData.cityId}
@@ -176,7 +191,10 @@ const UpdateStore = () => {
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Khu vực</label>
+          <label className="block font-semibold mb-1 flex items-center">
+            <MapPin className="w-5 h-5 mr-2 text-yellow-400" />
+            Khu vực
+          </label>
           <select
             name="areaId"
             value={formData.areaId}
@@ -193,7 +211,10 @@ const UpdateStore = () => {
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Người quản lý</label>
+          <label className="block font-semibold mb-1 flex items-center">
+            <Users2 className="w-5 h-5 mr-2 text-yellow-400" />
+            Người quản lý
+          </label>
           <select
             name="managerId"
             value={formData.managerId}
@@ -210,7 +231,10 @@ const UpdateStore = () => {
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Nhân viên</label>
+          <label className="block font-semibold mb-1 flex items-center">
+            <Users2 className="w-5 h-5 mr-2 text-yellow-400" />
+            Nhân viên
+          </label>
           <div className="grid grid-cols-2 gap-4">
             <div className="bg-gray-700 p-2 rounded">
               <p className="font-medium mb-1">Danh sách nhân viên</p>
@@ -267,8 +291,9 @@ const UpdateStore = () => {
 
         <button
           type="submit"
-          className="bg-green-500 hover:bg-green-600 px-4 py-2 rounded text-white font-semibold"
+          className="bg-green-500 hover:bg-green-600 px-4 py-2 rounded text-white font-semibold flex items-center justify-center"
         >
+          <Plus className="w-5 h-5 mr-2" />
           Cập Nhật Cửa Hàng
         </button>
       </form>

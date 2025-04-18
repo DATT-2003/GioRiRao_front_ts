@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import managementApi from "../managementApi"
 import { IArea, ICity, IStaff } from "../managementTypes"
 
 const AddStoreForm = () => {
+  const navigate = useNavigate()
+
   const [cities, setCities] = useState<ICity[]>([])
   const [areas, setAreas] = useState<IArea[]>([])
   const [staffs, setStaffs] = useState<IStaff[]>([])
@@ -55,6 +58,7 @@ const AddStoreForm = () => {
     try {
       await managementApi.createStore(payload)
       alert("Tạo cửa hàng thành công!")
+      navigate("/management")
     } catch (error) {
       console.error("Lỗi tạo cửa hàng:", error)
       alert("Tạo cửa hàng thất bại.")
@@ -66,62 +70,72 @@ const AddStoreForm = () => {
 
   return (
     <div className="max-h-screen overflow-y-auto bg-gray-900">
-      {/* Tiêu đề cố định khi cuộn */}
-      <div className="sticky top-0 bg-gray-900 z-20 w-full text-white py-4 border-b border-gray-700">
+      {/* Tiêu đề cố định */}
+      <div className="sticky top-0 bg-gray-900 z-20 w-full text-white py-4 border-b border-gray-700 shadow-md">
         <h2 className="text-2xl font-bold text-center">Tạo Cửa Hàng Mới</h2>
       </div>
 
       <form
         onSubmit={handleSubmit}
-        className="text-white p-6 space-y-4 max-w-2xl mx-auto"
+        className="text-white p-6 space-y-6 max-w-2xl mx-auto"
       >
         <div>
-          <label className="block font-semibold mb-1">Tên cửa hàng</label>
+          <label className="block font-semibold mb-1 text-gray-300">
+            Tên cửa hàng
+          </label>
           <input
             type="text"
             name="name"
-            className="w-full p-2 rounded bg-gray-700"
+            className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             onChange={handleChange}
           />
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Địa chỉ</label>
+          <label className="block font-semibold mb-1 text-gray-300">
+            Địa chỉ
+          </label>
           <input
             type="text"
             name="address"
-            className="w-full p-2 rounded bg-gray-700"
+            className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             onChange={handleChange}
           />
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Số điện thoại</label>
+          <label className="block font-semibold mb-1 text-gray-300">
+            Số điện thoại
+          </label>
           <input
             type="text"
             name="phone"
-            className="w-full p-2 rounded bg-gray-700"
+            className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             onChange={handleChange}
           />
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Email</label>
+          <label className="block font-semibold mb-1 text-gray-300">
+            Email
+          </label>
           <input
             type="email"
             name="email"
-            className="w-full p-2 rounded bg-gray-700"
+            className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             onChange={handleChange}
           />
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Thành phố</label>
+          <label className="block font-semibold mb-1 text-gray-300">
+            Thành phố
+          </label>
           <select
             name="cityId"
             value={formData.cityId}
             onChange={handleChange}
-            className="w-full p-2 rounded bg-gray-700"
+            className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
           >
             <option value="">Chọn thành phố</option>
             {cities.map(city => (
@@ -133,12 +147,14 @@ const AddStoreForm = () => {
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">Khu vực</label>
+          <label className="block font-semibold mb-1 text-gray-300">
+            Khu vực
+          </label>
           <select
             name="areaId"
             value={formData.areaId}
             onChange={handleChange}
-            className="w-full p-2 rounded bg-gray-700"
+            className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
           >
             <option value="">Chọn khu vực</option>
             {areas.map(area => (
@@ -149,36 +165,52 @@ const AddStoreForm = () => {
           </select>
         </div>
 
+        {/* Quản lý */}
         <div>
-          <label className="block font-semibold mb-1">Người quản lý</label>
-          <select
-            name="managerId"
-            value={formData.managerId}
-            onChange={handleChange}
-            className="w-full p-2 rounded bg-gray-700"
-          >
-            <option value="">Chọn người quản lý</option>
-            {filteredManagers.map(s => (
-              <option key={s._id} value={s._id}>
-                {s.name}
-              </option>
-            ))}
-          </select>
+          <label className="block font-semibold mb-1 text-gray-300">
+            Người quản lý
+          </label>
+          <div className="flex gap-2">
+            <select
+              name="managerId"
+              value={formData.managerId}
+              onChange={handleChange}
+              className="flex-1 p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            >
+              <option value="">Chọn người quản lý</option>
+              {filteredManagers.map(s => (
+                <option key={s._id} value={s._id}>
+                  {s.name}
+                </option>
+              ))}
+            </select>
+
+            <button
+              type="button"
+              onClick={() => navigate("/management/addstaff")}
+              className="px-3 py-2 bg-green-600 hover:bg-green-700 text-white rounded whitespace-nowrap shadow-sm transition"
+            >
+              + Nhân viên
+            </button>
+          </div>
         </div>
 
+        {/* Nhân viên */}
         <div>
-          <label className="block font-semibold mb-1">Nhân viên</label>
+          <label className="block font-semibold mb-1 text-gray-300">
+            Nhân viên
+          </label>
           <div className="grid grid-cols-2 gap-4">
-            {/* Danh sách nhân viên để chọn */}
-            <div className="bg-gray-700 p-2 rounded">
-              <p className="font-medium mb-1">Danh sách nhân viên</p>
-              <ul className="max-h-40 overflow-y-auto text-sm">
+            {/* Danh sách chọn */}
+            <div className="bg-gray-800 p-3 rounded shadow-inner">
+              <p className="font-medium mb-2">Danh sách nhân viên</p>
+              <ul className="max-h-40 overflow-y-auto text-sm space-y-1">
                 {staffOptions
                   .filter(s => !formData.staffs.includes(s._id!))
                   .map(s => (
                     <li
                       key={s._id}
-                      className="cursor-pointer hover:bg-gray-600 p-1 rounded"
+                      className="cursor-pointer hover:bg-gray-600 p-1 rounded transition duration-150"
                       onDoubleClick={() =>
                         setFormData(prev => ({
                           ...prev,
@@ -193,15 +225,15 @@ const AddStoreForm = () => {
             </div>
 
             {/* Danh sách đã chọn */}
-            <div className="bg-gray-700 p-2 rounded">
-              <p className="font-medium mb-1">Đã chọn</p>
-              <ul className="max-h-40 overflow-y-auto text-sm">
+            <div className="bg-gray-800 p-3 rounded shadow-inner">
+              <p className="font-medium mb-2">Đã chọn</p>
+              <ul className="max-h-40 overflow-y-auto text-sm space-y-1">
                 {formData.staffs.map(id => {
                   const staff = staffs.find(s => s._id === id)
                   return (
                     <li
                       key={id}
-                      className="flex justify-between items-center p-1 bg-gray-600 rounded mb-1"
+                      className="flex justify-between items-center p-1 bg-gray-700 hover:bg-gray-600 rounded"
                     >
                       <span>{staff?.name || "Không rõ"}</span>
                       <button
@@ -226,7 +258,7 @@ const AddStoreForm = () => {
 
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded text-white font-semibold"
+          className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-white font-semibold shadow-md transition"
         >
           Tạo Cửa Hàng
         </button>

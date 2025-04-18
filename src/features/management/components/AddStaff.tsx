@@ -1,8 +1,11 @@
 import React, { useState } from "react"
+import { useNavigate } from "react-router-dom"
 import managementApi from "../managementApi"
 import { IStaff } from "../managementTypes"
 
 const AddStaffForm = () => {
+  const navigate = useNavigate()
+
   const [formData, setFormData] = useState<
     Omit<IStaff, "_id" | "createdAt" | "updatedAt"> & { password: string }
   >({
@@ -12,7 +15,7 @@ const AddStaffForm = () => {
     address: "",
     role: "staffCashier",
     avatar: "",
-    password: "", // 👉 Thêm field password
+    password: "",
   })
 
   const [avatarFile, setAvatarFile] = useState<File | null>(null)
@@ -42,6 +45,7 @@ const AddStaffForm = () => {
     try {
       await managementApi.createStaff(data)
       alert("Tạo nhân viên thành công!")
+      navigate("/staffs")
     } catch (error) {
       console.error("Error creating staff:", error)
       alert("Tạo thất bại.")
@@ -49,81 +53,121 @@ const AddStaffForm = () => {
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="space-y-4 bg-gray-800 p-4 rounded text-white"
-    >
-      <div>
-        <label>Tên:</label>
-        <input
-          name="name"
-          onChange={handleChange}
-          className="w-full p-2 rounded bg-gray-700"
-          required
-        />
-      </div>
-      <div>
-        <label>Email:</label>
-        <input
-          type="email"
-          name="email"
-          onChange={handleChange}
-          className="w-full p-2 rounded bg-gray-700"
-          required
-        />
-      </div>
-      <div>
-        <label>Mật khẩu:</label>
-        <input
-          type="password"
-          name="password"
-          onChange={handleChange}
-          className="w-full p-2 rounded bg-gray-700"
-          required
-        />
-      </div>
-      <div>
-        <label>Điện thoại:</label>
-        <input
-          name="phone"
-          onChange={handleChange}
-          className="w-full p-2 rounded bg-gray-700"
-          required
-        />
-      </div>
-      <div>
-        <label>Địa chỉ:</label>
-        <input
-          name="address"
-          onChange={handleChange}
-          className="w-full p-2 rounded bg-gray-700"
-        />
-      </div>
-      <div>
-        <label>Vai trò:</label>
-        <select
-          name="role"
-          onChange={handleChange}
-          className="w-full p-2 rounded bg-gray-700"
+    <div className="h-screen flex flex-col items-center bg-gray-800 text-white">
+      <h2 className=" mt-5 text-2xl font-semibold text-center mb-4">
+        Thêm nhân viên mới
+      </h2>
+      {/* Scrollable form */}
+      <form
+        id="add-staff-form"
+        onSubmit={handleSubmit}
+        className=" flex-1 overflow-y-auto w-full max-w-md p-6 space-y-6 rounded-tl-xl rounded-tr-xl
+ shadow-lg bg-gray-900"
+        style={{
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+        }}
+      >
+        {/* Tên */}
+        <div className="space-y-1">
+          <label className="block text-sm font-medium">Tên:</label>
+          <input
+            name="name"
+            onChange={handleChange}
+            className="w-full p-2 bg-gray-800 text-white rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            required
+          />
+        </div>
+
+        {/* Email */}
+        <div className="space-y-1">
+          <label className="block text-sm font-medium">Email:</label>
+          <input
+            type="email"
+            name="email"
+            onChange={handleChange}
+            className="w-full p-2 bg-gray-800 text-white rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            required
+          />
+        </div>
+
+        {/* Mật khẩu */}
+        <div className="space-y-1">
+          <label className="block text-sm font-medium">Mật khẩu:</label>
+          <input
+            type="password"
+            name="password"
+            onChange={handleChange}
+            className="w-full p-2 bg-gray-800 text-white rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            required
+          />
+        </div>
+
+        {/* Điện thoại */}
+        <div className="space-y-1">
+          <label className="block text-sm font-medium">Điện thoại:</label>
+          <input
+            name="phone"
+            onChange={handleChange}
+            className="w-full p-2 bg-gray-800 text-white rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            required
+          />
+        </div>
+
+        {/* Địa chỉ */}
+        <div className="space-y-1">
+          <label className="block text-sm font-medium">Địa chỉ:</label>
+          <input
+            name="address"
+            onChange={handleChange}
+            className="w-full p-2 bg-gray-800 text-white rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+          />
+        </div>
+
+        {/* Vai trò */}
+        <div className="space-y-1">
+          <label className="block text-sm font-medium">Vai trò:</label>
+          <select
+            name="role"
+            onChange={handleChange}
+            className="w-full p-2 bg-gray-800 text-white rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+          >
+            <option value="storeManager">Quản lý</option>
+            <option value="staffCashier">Thu ngân</option>
+            <option value="staffBarista">Pha chế</option>
+            <option value="staffWaiter">Phục vụ</option>
+          </select>
+        </div>
+
+        {/* Avatar */}
+        <div className="space-y-1">
+          <label className="block text-sm font-medium">Ảnh đại diện:</label>
+          <input
+            type="file"
+            onChange={handleFileChange}
+            className="w-full p-2 bg-gray-800 text-white rounded-lg border border-gray-700 file:bg-gray-700 file:text-white file:border-none file:rounded file:px-4 file:py-2"
+          />
+        </div>
+      </form>
+
+      {/* Nút cố định */}
+      <div className="w-full max-w-md p-4 bg-gray-900 flex justify-between gap-4 rounded-bl-xl rounded-br-xl">
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          className="w-1/2 bg-gray-600 hover:bg-gray-700 transition text-white font-semibold py-2 px-4 rounded-lg"
         >
-          <option value="storeManager">Quản lý</option>
-          <option value="staffCashier">Thu ngân</option>
-          <option value="staffBarista">Pha chế</option>
-          <option value="staffWaiter">Phục vụ</option>
-        </select>
+          Quay lại
+        </button>
+        <button
+          type="submit"
+          form="add-staff-form"
+          className="w-1/2 bg-blue-600 hover:bg-blue-700 transition text-white font-semibold py-2 px-4 rounded-lg"
+        >
+          Tạo nhân viên
+        </button>
       </div>
-      <div>
-        <label>Avatar:</label>
-        <input
-          type="file"
-          onChange={handleFileChange}
-          className="w-full p-2 rounded bg-gray-700"
-        />
-      </div>
-      <button type="submit" className="bg-blue-500 px-4 py-2 rounded">
-        Tạo nhân viên
-      </button>
-    </form>
+    </div>
   )
 }
 

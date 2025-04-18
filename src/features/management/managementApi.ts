@@ -38,14 +38,16 @@ const managementApi = {
     return response.data.data
   },
   async updateStore(storeId: string, data: Partial<IStore>): Promise<IStore> {
-    const response = await api.patch(
+    const response = await api.put(
       ManagementEndpoint.updateStore(storeId),
       data,
     )
     return response.data.data
   },
   async getStoreById(storeId: string): Promise<IStore> {
+    console.log("storeId", storeId)
     const response = await api.get(ManagementEndpoint.getStoreById(storeId))
+    console.log("get store by id managementApi", response.data.store)
     return response.data.store
   },
   async getAllStaffs(): Promise<IStaff[]> {

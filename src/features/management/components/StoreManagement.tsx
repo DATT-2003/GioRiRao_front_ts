@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react"
 import { ICity, IArea, IStore, IStaff } from "../managementTypes"
 import managementApi from "../managementApi"
-import { useDispatch } from "react-redux"
-import { setPopUpTab, setSelectedStoreStaffInfo } from "../managementSlice"
+import { useDispatch, useSelector } from "react-redux"
+import {
+  setPopUpTab,
+  setSelectedStoreStaffInfo,
+  setStoreFilter,
+  selectStoreFilter,
+} from "../managementSlice"
 import { useNavigate } from "react-router-dom"
+import { Building2, MapPin, Phone, Users, User2 } from "lucide-react"
 
 const StoreManagement = () => {
   const [cities, setCities] = useState<ICity[]>([])
@@ -18,8 +24,11 @@ const StoreManagement = () => {
   const [manager, setManager] = useState<IStaff | null>(null)
   const [staffList, setStaffList] = useState<IStaff[]>([])
 
+  const [initialized, setInitialized] = useState(false)
+
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const storeFilter = useSelector(selectStoreFilter)
 
   const handleCreateStore = () => navigate("/management/addstore")
   const handleUpdateStore = () => {
@@ -27,6 +36,21 @@ const StoreManagement = () => {
       navigate(`/management/editstore/${storeDetail._id}`)
     }
   }
+
+  useEffect(() => {
+    if (storeFilter && !initialized) {
+      setSelectedCity(storeFilter.selectedCity)
+      setSelectedArea(storeFilter.selectedArea)
+      setSelectedStore(storeFilter.selectedStore)
+      setInitialized(true)
+    }
+  }, [storeFilter, initialized])
+
+  useEffect(() => {
+    if (selectedCity || selectedArea || selectedStore) {
+      dispatch(setStoreFilter({ selectedCity, selectedArea, selectedStore }))
+    }
+  }, [selectedCity, selectedArea, selectedStore, dispatch])
 
   useEffect(() => {
     const fetchCities = async () => {
@@ -37,32 +61,22 @@ const StoreManagement = () => {
   }, [])
 
   useEffect(() => {
-    if (!selectedCity) return
+    if (!initialized || !selectedCity) return
     const fetchAreas = async () => {
       const res = await managementApi.getAreasByCityId(selectedCity)
       setAreas(res)
-      setSelectedArea("")
-      setStores([])
-      setSelectedStore("")
-      setStoreDetail(null)
-      setManager(null)
-      setStaffList([])
     }
     fetchAreas()
-  }, [selectedCity])
+  }, [selectedCity, initialized])
 
   useEffect(() => {
-    if (!selectedArea) return
+    if (!initialized || !selectedArea) return
     const fetchStores = async () => {
       const res = await managementApi.getStoresByAreaId(selectedArea)
       setStores(res)
-      setSelectedStore("")
-      setStoreDetail(null)
-      setManager(null)
-      setStaffList([])
     }
     fetchStores()
-  }, [selectedArea])
+  }, [selectedArea, initialized])
 
   useEffect(() => {
     const fetchStoreDetail = async () => {
@@ -100,8 +114,9 @@ const StoreManagement = () => {
   }, [selectedStore, stores])
 
   return (
-    <div className="p-6 space-y-6 bg-gray-800 text-white min-h-screen">
-      <h1 className="text-2xl font-bold text-center">
+    <div className=" p-6 space-y-6 min-h-screenh-[85vh] flex flex-col bg-gray-900 text-white px-6 py-4 overflow-hidden rounded-lg">
+      <h1 className="text-2xl font-bold text-center flex items-center justify-center gap-2">
+        <Building2 className="w-6 h-6" />
         Trang Web Quản Lý Cửa Hàng
       </h1>
 
@@ -158,17 +173,16 @@ const StoreManagement = () => {
         <div className="flex items-end space-x-2">
           <button
             onClick={handleCreateStore}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
           >
-            Tạo Cửa Hàng
+            + Tạo Cửa Hàng
           </button>
-
           {storeDetail && (
             <button
               onClick={handleUpdateStore}
               className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
             >
-              Cập Nhật Cửa Hàng
+              Cập Nhật
             </button>
           )}
         </div>
@@ -176,10 +190,13 @@ const StoreManagement = () => {
 
       {storeDetail && (
         <>
-          {/* Thông tin chung và nhân viên */}
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-gray-700 p-4 rounded shadow">
-              <h2 className="text-lg font-semibold mb-2">Thông tin chung</h2>
+            {/* Thông tin chung */}
+            <div className="bg-gray-800 p-4 rounded shadow space-y-2">
+              <h2 className="text-lg font-semibold flex items-center gap-2 mb-2">
+                <MapPin className="w-5 h-5" />
+                Thông Tin Chung
+              </h2>
               <p>
                 <strong>Địa chỉ:</strong> {storeDetail.address}
               </p>
@@ -209,8 +226,9 @@ const StoreManagement = () => {
               </p>
             </div>
 
+            {/* Danh sách nhân viên */}
             <div
-              className="bg-gray-700 p-4 rounded shadow cursor-pointer"
+              className="bg-gray-800 p-4 rounded shadow space-y-2 cursor-pointer"
               onClick={() => {
                 dispatch(
                   setSelectedStoreStaffInfo({
@@ -221,41 +239,16 @@ const StoreManagement = () => {
                 dispatch(setPopUpTab("staffManagement"))
               }}
             >
-              <h2 className="text-lg font-semibold mb-2">
+              <h2 className="text-lg font-semibold flex items-center gap-2 mb-2">
+                <Users className="w-5 h-5" />
                 Danh Sách Nhân Viên
               </h2>
               <ul className="list-disc pl-5">
                 {staffList.length > 0 ? (
-                  staffList.map(staff => (
-                    <li key={staff._id}>
-                      <span className="">{staff.name}</span>
-                    </li>
-                  ))
+                  staffList.map(staff => <li key={staff._id}>{staff.name}</li>)
                 ) : (
                   <li>Không có nhân viên</li>
                 )}
-              </ul>
-            </div>
-          </div>
-
-          {/* Thống kê và lịch làm việc */}
-          <div className="grid grid-cols-2 gap-4">
-            <div className="bg-gray-700 p-4 rounded shadow">
-              <h2 className="text-lg font-semibold mb-2">Thống Kê</h2>
-              <p>
-                <strong>Doanh thu:</strong> ...
-              </p>
-              <p>
-                <strong>Top sản phẩm:</strong> ...
-              </p>
-            </div>
-
-            <div className="bg-gray-700 p-4 rounded shadow">
-              <h2 className="text-lg font-semibold mb-2">Lịch Làm Việc</h2>
-              <ul className="list-disc pl-5">
-                <li>T2: ...</li>
-                <li>T3: ...</li>
-                <li>T4: ...</li>
               </ul>
             </div>
           </div>

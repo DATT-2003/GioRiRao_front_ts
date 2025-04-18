@@ -184,7 +184,6 @@ export const cartSlice = createAppSlice({
   }),
   selectors: {
     selectCartItems: cart => {
-      console.log("selectCartItems", cart.cartItems)
       return cart.cartItems
     },
 

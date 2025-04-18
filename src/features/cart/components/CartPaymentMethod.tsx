@@ -10,6 +10,7 @@ import {
   setIsCartComfirmationOpen,
   setIsPaymentSuccessOpen,
 } from "../cartSlice"
+import { setNewOrder } from "../../order/orderSlice"
 import convertCartItemsToOrderDetails from "../../../utils/transformCarItemToOrderDetail"
 
 const CartPaymentMethod = () => {
@@ -31,7 +32,7 @@ const CartPaymentMethod = () => {
     }
     const newOrder = await orderApi.createOrder(order)
     if (newOrder) {
-      console.log("are you running", newOrder)
+      dispatch(setNewOrder(newOrder))
       dispatch(setIsCartComfirmationOpen({ isOpen: false }))
       dispatch(setIsPaymentSuccessOpen({ isOpen: true }))
       dispatch(removeCartList())
