@@ -65,7 +65,9 @@ const MainContent = () => {
           <Route
             path="/Orderlist"
             element={
-              <ProtectedRoute allowRoles={["storeManager", "staffBarista"]}>
+              <ProtectedRoute
+                allowRoles={["storeManager", "staffBarista", "admin"]}
+              >
                 <OrderListPage />
               </ProtectedRoute>
             }
