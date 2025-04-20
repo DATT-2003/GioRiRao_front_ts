@@ -2,10 +2,12 @@ import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import managementApi from "../managementApi"
 import { IStaff } from "../managementTypes"
+import { useDispatch, useSelector } from "react-redux"
+import { selectStoreFilter, setPopUpTab } from "../managementSlice"
 
 const AddStaffForm = () => {
   const navigate = useNavigate()
-
+  const dispatch = useDispatch()
   const [formData, setFormData] = useState<
     Omit<IStaff, "_id" | "createdAt" | "updatedAt"> & { password: string }
   >({
@@ -19,6 +21,7 @@ const AddStaffForm = () => {
   })
 
   const [avatarFile, setAvatarFile] = useState<File | null>(null)
+  const { selectedStore } = useSelector(selectStoreFilter)
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
@@ -33,7 +36,7 @@ const AddStaffForm = () => {
       setAvatarFile(file)
     }
   }
-
+  const handleBackToStore = () => dispatch(setPopUpTab("storeManagement"))
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     const data = new FormData()
@@ -43,9 +46,13 @@ const AddStaffForm = () => {
     }
 
     try {
-      await managementApi.createStaff(data)
+      const datastaff = await managementApi.createStaff(data)
+      //await managementApi.createStaff(data)
+      await managementApi.updateStore(selectedStore, {
+        $push: { staffs: datastaff._id },
+      })
       alert("Tạo nhân viên thành công!")
-      navigate("/staffs")
+      handleBackToStore
     } catch (error) {
       console.error("Error creating staff:", error)
       alert("Tạo thất bại.")
@@ -132,7 +139,6 @@ const AddStaffForm = () => {
             onChange={handleChange}
             className="w-full p-2 bg-gray-800 text-white rounded-lg border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
           >
-            <option value="storeManager">Quản lý</option>
             <option value="staffCashier">Thu ngân</option>
             <option value="staffBarista">Pha chế</option>
             <option value="staffWaiter">Phục vụ</option>

@@ -30,14 +30,14 @@ const managementApi = {
         "Content-Type": "multipart/form-data",
       },
     })
-    // console.log("create staff managementApi", response.data.data)
-    return response.data.data
+    return response.data.newStaff
   },
   async createStore(data: Partial<IStore>): Promise<IStore> {
     const response = await api.post(ManagementEndpoint.createStore, data)
     return response.data.data
   },
-  async updateStore(storeId: string, data: Partial<IStore>): Promise<IStore> {
+  async updateStore(storeId: string, data: any): Promise<IStore> {
+    console.log("update store data", data)
     const response = await api.put(
       ManagementEndpoint.updateStore(storeId),
       data,
@@ -47,7 +47,7 @@ const managementApi = {
   async getStoreById(storeId: string): Promise<IStore> {
     console.log("storeId", storeId)
     const response = await api.get(ManagementEndpoint.getStoreById(storeId))
-    console.log("get store by id managementApi", response.data.store)
+    //console.log("get store by id managementApi", response.data.store)
     return response.data.store
   },
   async getAllStaffs(): Promise<IStaff[]> {
@@ -55,8 +55,9 @@ const managementApi = {
     // console.log("get all staffs managementApi", response.data.data)
     return response.data.data
   },
-  async deleteStaff(staffId: string): Promise<void> {
-    await api.delete(ManagementEndpoint.deleteStaff(staffId))
+  async deleteStaff(staffId: string, data: any): Promise<void> {
+    await api.put(ManagementEndpoint.deleteStaff(staffId), { data })
+    console.log("delete staff managementApi", data)
   },
   async updateStaff(staffId: string, data: Partial<IStaff>): Promise<IStaff> {
     const response = await api.put(

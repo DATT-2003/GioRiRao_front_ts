@@ -66,7 +66,6 @@ const AddStoreForm = () => {
   }
 
   const filteredManagers = staffs.filter(s => s.role === "storeManager")
-  const staffOptions = staffs.filter(s => s.role !== "storeManager")
 
   return (
     <div className="max-h-screen overflow-y-auto bg-gray-900">
@@ -192,67 +191,6 @@ const AddStoreForm = () => {
             >
               + Nhân viên
             </button>
-          </div>
-        </div>
-
-        {/* Nhân viên */}
-        <div>
-          <label className="block font-semibold mb-1 text-gray-300">
-            Nhân viên
-          </label>
-          <div className="grid grid-cols-2 gap-4">
-            {/* Danh sách chọn */}
-            <div className="bg-gray-800 p-3 rounded shadow-inner">
-              <p className="font-medium mb-2">Danh sách nhân viên</p>
-              <ul className="max-h-40 overflow-y-auto text-sm space-y-1">
-                {staffOptions
-                  .filter(s => !formData.staffs.includes(s._id!))
-                  .map(s => (
-                    <li
-                      key={s._id}
-                      className="cursor-pointer hover:bg-gray-600 p-1 rounded transition duration-150"
-                      onDoubleClick={() =>
-                        setFormData(prev => ({
-                          ...prev,
-                          staffs: [...prev.staffs, s._id!],
-                        }))
-                      }
-                    >
-                      {s.name}
-                    </li>
-                  ))}
-              </ul>
-            </div>
-
-            {/* Danh sách đã chọn */}
-            <div className="bg-gray-800 p-3 rounded shadow-inner">
-              <p className="font-medium mb-2">Đã chọn</p>
-              <ul className="max-h-40 overflow-y-auto text-sm space-y-1">
-                {formData.staffs.map(id => {
-                  const staff = staffs.find(s => s._id === id)
-                  return (
-                    <li
-                      key={id}
-                      className="flex justify-between items-center p-1 bg-gray-700 hover:bg-gray-600 rounded"
-                    >
-                      <span>{staff?.name || "Không rõ"}</span>
-                      <button
-                        type="button"
-                        className="text-red-400 hover:text-red-600 ml-2"
-                        onClick={() =>
-                          setFormData(prev => ({
-                            ...prev,
-                            staffs: prev.staffs.filter(sId => sId !== id),
-                          }))
-                        }
-                      >
-                        X
-                      </button>
-                    </li>
-                  )
-                })}
-              </ul>
-            </div>
           </div>
         </div>
 

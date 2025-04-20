@@ -16,7 +16,7 @@ const ManagementEndpoint = {
   getStaffById: (staffId: string) => `${StaffBase}/${staffId}`,
   createStaff: `${StaffBase}`,
   getlllStaffs: `${StaffBase}`,
-  deleteStaff: (staffId: string) => `${StaffBase}/${staffId}`,
+  deleteStaff: (staffId: string) => `${StaffBase}/delete/${staffId}`,
   updateStaff: (staffId: string) => `${StaffBase}/${staffId}`,
 }
 export default ManagementEndpoint

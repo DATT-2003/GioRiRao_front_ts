@@ -2,11 +2,13 @@ import { useEffect, useState } from "react"
 import { useNavigate, useParams } from "react-router-dom"
 import managementApi from "../managementApi"
 import { IStaff } from "../managementTypes"
+import { useSelector } from "react-redux"
+import { selectStoreFilter } from "../managementSlice"
 
 export default function UpdateStaff() {
   const { id } = useParams()
   const navigate = useNavigate()
-
+  const { selectedStore } = useSelector(selectStoreFilter)
   const [staff, setStaff] = useState<IStaff | null>(null)
   const [formData, setFormData] = useState<{
     name: string
@@ -51,7 +53,6 @@ export default function UpdateStaff() {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
   }
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
@@ -70,7 +71,7 @@ export default function UpdateStaff() {
     if (!confirm) return
 
     try {
-      await managementApi.deleteStaff(id!)
+      await managementApi.deleteStaff(id!, selectedStore)
       alert("Xoá nhân viên thành công!")
       navigate("/management")
     } catch (err) {

@@ -4,6 +4,7 @@ import { IStaff } from "../managementTypes"
 import { useDispatch, useSelector } from "react-redux"
 import {
   setPopUpTab,
+  selectPopUpTab,
   selectSelectedStoreStaffIds,
   selectSelectedManagerId,
 } from "../managementSlice"
@@ -23,6 +24,7 @@ const StaffManagement = () => {
 
   const selectedStoreStaffIds = useSelector(selectSelectedStoreStaffIds)
   const selectedManagerId = useSelector(selectSelectedManagerId)
+  const activePopUp = useSelector(selectPopUpTab)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -48,10 +50,13 @@ const StaffManagement = () => {
       }
     }
 
-    if (selectedStoreStaffIds.length > 0 || selectedManagerId) {
+    if (activePopUp === "staffManagement") {
       fetchStaffs()
+    } else {
+      setStaffs([])
+      setManager(null)
     }
-  }, [selectedStoreStaffIds, selectedManagerId])
+  }, [activePopUp, selectedStoreStaffIds, selectedManagerId])
 
   const handleCreateStaff = () => navigate("/management/addstaff")
   const handleViewStaff = (staffId: string) =>

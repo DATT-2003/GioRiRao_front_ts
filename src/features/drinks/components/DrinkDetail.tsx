@@ -25,13 +25,11 @@ const DrinkDetail = () => {
 
   useEffect(() => {
     async function loadDrinkDetail() {
-      console.log("drinkid", drinkId)
       const drink = await drinkApi.getDrinkDetail(drinkId ? drinkId : "")
       setDrinkDetail(drink)
     }
     loadDrinkDetail()
   }, [drinkId])
-  console.log("cartItem", cartItem)
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {

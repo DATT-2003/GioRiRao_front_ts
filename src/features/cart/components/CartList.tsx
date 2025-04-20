@@ -20,7 +20,7 @@ const CartList = () => {
     <div className="bg-gray-900 p-6 rounded-lg flex flex-col justify-between h-[550px] overflow-y-scroll hide-scrollbar">
       <div className="mb-6">
         <div className="flex justify-between mb-5">
-          <h2 className="text-lg font-medium">Orders #34562</h2>
+          <h2 className="text-lg font-medium">Orders</h2>
         </div>
         <div className="flex mb-5 text-[17px] pb-2 border-b">
           <p className="mr-[200px]">Item</p>
