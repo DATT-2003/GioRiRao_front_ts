@@ -43,7 +43,7 @@ const Navigation = () => (
     <div className="flex flex-col gap-6 flex-grow">
       <NavItem to="/" Icon={Home} />
       <NavItem to="/history" Icon={History} />
-      <NavItem to="/messages" Icon={Mail} />
+      <NavItem to="/statistics" Icon={Mail} />
       <NavItem to="/notifications" Icon={Bell} />
       <NavItem to="/settings" Icon={Settings} />
     </div>

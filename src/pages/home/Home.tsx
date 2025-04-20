@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import CategoriesList from "../../features/drinks/components/CategoriesList"
 import DrinksList from "../../features/drinks/components/DrinksList"
 import SearchBar from "./components/SearchBar"

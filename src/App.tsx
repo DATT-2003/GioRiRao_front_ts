@@ -4,11 +4,15 @@ import Navigation from "./features/common/Navigation"
 import LoginPage from "./pages/authentication/LoginPage"
 import ProtectedRoute from "./features/authentication/components/ProtectedRoute"
 import SettingsPage from "./pages/setting/SettingsPage"
+import StatisticPage from "./pages/statistic/StatisticPage"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const App = () => {
   return (
     <BrowserRouter>
       <MainContent />
+      <ToastContainer />
     </BrowserRouter>
   )
 }
@@ -23,10 +27,40 @@ const MainContent = () => {
       <div className="flex-1">
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route element={<ProtectedRoute />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/settings" element={<SettingsPage />} />
-          </Route>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute
+                allowRoles={["storeManager", "staffCashier", "admin"]}
+              >
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute allowRoles={["storeManager", "staffCashier"]}>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute allowRoles={["admin", "storeManager"]}>
+                <SettingsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/statistics"
+            element={
+              <ProtectedRoute allowRoles={["admin", "storeManager"]}>
+                <StatisticPage />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </div>
     </div>
