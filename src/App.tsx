@@ -4,6 +4,7 @@ import Navigation from "./features/common/Navigation"
 import LoginPage from "./pages/authentication/LoginPage"
 import ProtectedRoute from "./features/authentication/components/ProtectedRoute"
 import SettingsPage from "./pages/setting/SettingsPage"
+import OrderListPage from "./pages/orderchecklist/OrderListPage"
 import StatisticPage from "./pages/statistic/StatisticPage"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
@@ -58,6 +59,14 @@ const MainContent = () => {
             element={
               <ProtectedRoute allowRoles={["admin", "storeManager"]}>
                 <StatisticPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/Orderlist"
+            element={
+              <ProtectedRoute allowRoles={["storeManager", "staffBarista"]}>
+                <OrderListPage />
               </ProtectedRoute>
             }
           />
