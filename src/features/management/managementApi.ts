@@ -66,5 +66,12 @@ const managementApi = {
     )
     return response.data.data
   },
+  async getStoreByManagerId(managerId: string): Promise<IStore[]> {
+    const response = await api.get(
+      ManagementEndpoint.getStoreByManagerId(managerId),
+    )
+    const arr = [response.data.store]
+    return arr
+  },
 }
 export default managementApi

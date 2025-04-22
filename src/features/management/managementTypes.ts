@@ -24,7 +24,7 @@ export interface IArea {
   updatedAt?: string
 }
 export interface IStore {
-  _id?: string
+  _id: string
   name: string
   address: string
   managerId?: string

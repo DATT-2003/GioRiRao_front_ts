@@ -5,6 +5,7 @@ import { drinkSlice } from "../features/drinks/drinkSlice"
 import { authSlice } from "../features/authentication/authSlice"
 import { cartSlice } from "../features/cart/cartSlice"
 import { settingSlice } from "../features/settings/settingSlice"
+import { orderlistSlice } from "../features/orderlist/orderSlice"
 import { managementSlice } from "../features/management/managementSlice"
 import { orderSlice } from "../features/order/orderSlice"
 
@@ -15,6 +16,7 @@ const rootReducer = combineSlices(
   authSlice,
   cartSlice,
   settingSlice,
+  orderlistSlice,
   managementSlice,
   orderSlice,
 )

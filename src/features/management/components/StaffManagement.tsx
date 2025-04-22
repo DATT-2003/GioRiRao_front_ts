@@ -93,42 +93,40 @@ const StaffManagement = () => {
         <style>{`div::-webkit-scrollbar { display: none; }`}</style>
 
         {/* Store Manager */}
-        <div className="bg-gray-800 p-4 rounded-md shadow">
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+        <div className="bg-gradient-to-br from-gray-800 to-gray-900 p-4 rounded-2xl shadow-lg border border-gray-700">
+          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-white">
             <UserRoundCheck className="w-5 h-5 text-yellow-400" />
             Store Manager
           </h2>
           {manager ? (
-            <div className="overflow-x-auto">
-              <table className="w-full border border-gray-700 text-sm rounded-md overflow-hidden">
+            <div className="overflow-x-auto rounded-xl">
+              <table className="w-full text-sm border border-gray-700 overflow-hidden">
                 <thead className="bg-gray-700 text-white">
                   <tr>
-                    <th className="border px-4 py-2">Tên</th>
-                    <th className="border px-4 py-2">Số điện thoại</th>
-                    <th className="border px-4 py-2">Hành động</th>
+                    <th className="px-4 py-2 text-left w-1/2">Tên</th>
+                    <th className="px-4 py-2 text-left">Số điện thoại</th>
+                    <th className="px-4 py-2 text-center">Chức năng</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="bg-gray-900 hover:bg-gray-800">
-                    <td className="border px-4 py-2">{manager.name}</td>
-                    <td className="border px-4 py-2">{manager.phone}</td>
-                    <td className="border px-4 py-2 text-center">
+                  <tr className="bg-gray-900 hover:bg-gray-800 transition">
+                    <td className="px-4 py-2 w-1/2">{manager.name}</td>
+                    <td className="px-4 py-2">{manager.phone}</td>
+                    <td className="px-4 py-2 text-center">
                       <div className="flex justify-center gap-2">
                         <button
                           onClick={() => handleViewStaff(manager._id)}
-                          className="flex items-center p-2 bg-blue-500 hover:bg-blue-600 text-white rounded"
-                          title="Xem chi tiết"
+                          className="flex items-center px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-md"
                         >
-                          <Eye className="w-4 h-4" />
-                          <span className="ml-2">View</span>
+                          <Eye className="w-4 h-4" />{" "}
+                          <span className="ml-2">Xem</span>
                         </button>
                         <button
                           onClick={() => handleEditStaff(manager._id)}
-                          className="flex items-center p-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded"
-                          title="Chỉnh sửa"
+                          className="flex items-center px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md"
                         >
-                          <Pencil className="w-4 h-4" />
-                          <span className="ml-2">Edit</span>
+                          <Pencil className="w-4 h-4" />{" "}
+                          <span className="ml-2">Sửa</span>
                         </button>
                       </div>
                     </td>
@@ -142,44 +140,45 @@ const StaffManagement = () => {
         </div>
 
         {/* Nhân viên khác */}
-        <div className="bg-gray-800 p-4 rounded-md shadow">
-          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+        <div className="bg-gradient-to-br from-gray-800 to-gray-900 p-4 rounded-2xl shadow-lg border border-gray-700">
+          <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-white">
             <Users2 className="w-5 h-5 text-green-400" />
             Nhân viên khác
           </h2>
-          <div className="overflow-x-auto">
-            <table className="w-full border border-gray-700 text-sm rounded-md overflow-hidden">
+          <div className="overflow-x-auto rounded-xl">
+            <table className="w-full text-sm border border-gray-700 overflow-hidden">
               <thead className="bg-gray-700 text-white">
                 <tr>
-                  <th className="border px-4 py-2">Tên</th>
-                  <th className="border px-4 py-2">Số điện thoại</th>
-                  <th className="border px-4 py-2">Vai trò</th>
-                  <th className="border px-4 py-2">Hành động</th>
+                  <th className="px-4 py-2 text-left">Tên</th>
+                  <th className="px-4 py-2 text-left">Số điện thoại</th>
+                  <th className="px-4 py-2 text-left">Vai trò</th>
+                  <th className="px-4 py-2 text-center">Chức năng</th>
                 </tr>
               </thead>
               <tbody>
                 {staffs.map(s => (
-                  <tr key={s._id} className="bg-gray-900 hover:bg-gray-800">
-                    <td className="border px-4 py-2">{s.name}</td>
-                    <td className="border px-4 py-2">{s.phone}</td>
-                    <td className="border px-4 py-2 capitalize">{s.role}</td>
-                    <td className="border px-4 py-2 text-center">
+                  <tr
+                    key={s._id}
+                    className="bg-gray-900 hover:bg-gray-800 transition"
+                  >
+                    <td className="px-4 py-2 w-1/2">{s.name}</td>
+                    <td className="px-4 py-2">{s.phone}</td>
+                    <td className="px-4 py-2 capitalize">{s.role}</td>
+                    <td className="px-4 py-2 text-center">
                       <div className="flex justify-center gap-2">
                         <button
                           onClick={() => handleViewStaff(s._id)}
-                          className="flex items-center p-2 bg-blue-500 hover:bg-blue-600 text-white rounded"
-                          title="Xem chi tiết"
+                          className="flex items-center px-3 py-1 bg-blue-500 hover:bg-blue-600 text-white rounded-md"
                         >
-                          <Eye className="w-4 h-4" />
-                          <span className="ml-2">View</span>
+                          <Eye className="w-4 h-4" />{" "}
+                          <span className="ml-2">Xem</span>
                         </button>
                         <button
                           onClick={() => handleEditStaff(s._id)}
-                          className="flex items-center p-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded"
-                          title="Chỉnh sửa"
+                          className="flex items-center px-3 py-1 bg-yellow-500 hover:bg-yellow-600 text-white rounded-md"
                         >
-                          <Pencil className="w-4 h-4" />
-                          <span className="ml-2">Edit</span>
+                          <Pencil className="w-4 h-4" />{" "}
+                          <span className="ml-2">Sửa</span>
                         </button>
                       </div>
                     </td>

@@ -13,6 +13,8 @@ const ManagementEndpoint = {
   createStore: `${StoreBase}`,
   updateStore: (storeId: string) => `${StoreBase}/${storeId}`,
   getStoreById: (storeId: string) => `${StoreBase}/${storeId}`,
+  getStoreByManagerId: (managerId: string) =>
+    `${StoreBase}/manager/${managerId}`,
   getStaffById: (staffId: string) => `${StaffBase}/${staffId}`,
   createStaff: `${StaffBase}`,
   getlllStaffs: `${StaffBase}`,

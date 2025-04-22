@@ -3,6 +3,7 @@ import { useAppSelector } from "../../app/hooks"
 import { selectPopUpTab } from "../../features/management/managementSlice"
 import StoreManagement from "../../features/management/components/StoreManagement"
 import StaffManagement from "../../features/management/components/StaffManagement"
+import ManagerStore from "../../features/management/components/ManagerStore"
 
 const ManagementPage = () => {
   const activePopUp = useAppSelector(selectPopUpTab)

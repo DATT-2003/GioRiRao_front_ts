@@ -12,8 +12,8 @@ const LoginPage: React.FC = () => {
   const navigate = useNavigate()
 
   const [formData, setFormData] = useState<IFormData>({
-    email: "",
-    password: "",
+    email: "dbh.hcm@gmail.com",
+    password: "matkhau",
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,11 +28,18 @@ const LoginPage: React.FC = () => {
     e.preventDefault()
 
     try {
-      await authApi.loginAdmin(formData.email, formData.password)
-
-      localStorage.setItem("isAuthenticated", "true")
-
-      navigate("/")
+      await authApi.login(formData.email, formData.password)
+      const roleS = await authApi.getMeInfo()
+      //Nếu roleS == storeManager thì lưu lại id của manager
+      //Mở popup ManagementById
+      if (roleS.role === "admin") {
+        navigate("/statistics")
+      } else if (
+        roleS.role === "storeManager" ||
+        roleS.role === "staffCashier"
+      ) {
+        navigate("/")
+      }
     } catch (error) {
       console.error("Login failed:", error)
     }

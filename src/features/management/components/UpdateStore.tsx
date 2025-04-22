@@ -210,7 +210,7 @@ const UpdateStore = () => {
           </select>
         </div>
 
-        <div>
+        {/* <div>
           <label className="block font-semibold mb-1 flex items-center">
             <Users2 className="w-5 h-5 mr-2 text-yellow-400" />
             Người quản lý
@@ -228,7 +228,7 @@ const UpdateStore = () => {
               </option>
             ))}
           </select>
-        </div>
+        </div> */}
 
         <div>
           <label className="block font-semibold mb-1 flex items-center">
