@@ -29,7 +29,14 @@ const MainContent = () => {
       <div className="flex-1">
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute allowRoles={["admin","storeManager","staffCashier","staffBarista"]}>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/"
             element={
