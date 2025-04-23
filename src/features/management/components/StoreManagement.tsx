@@ -11,6 +11,7 @@ import {
 import { useNavigate } from "react-router-dom"
 import { Building2, MapPin, Users } from "lucide-react"
 import authApi from "../../authentication/authApi"
+import statisticApi from "../../statistic/statisticApi"
 
 const StoreManagement = () => {
   const [cities, setCities] = useState<ICity[]>([])
@@ -20,6 +21,9 @@ const StoreManagement = () => {
   const [selectedCity, setSelectedCity] = useState<string>("")
   const [selectedArea, setSelectedArea] = useState<string>("")
   const [selectedStore, setSelectedStore] = useState<string>("")
+  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear())
+  const [revenueData, setRevenueData] = useState<any[]>([])
+  const currentMonth = new Date().getMonth() + 1
 
   const [storeDetail, setStoreDetail] = useState<IStore | null>(null)
   const [manager, setManager] = useState<IStaff | null>(null)
@@ -139,7 +143,30 @@ const StoreManagement = () => {
       setStaffList([])
     }
   }, [selectedStore, stores])
+  useEffect(() => {
+    const fetchRevenueOfYear = async () => {
+      if (!selectedStore || !selectedYear) return
 
+      try {
+        const data = await statisticApi.getRevenueMonthOfYear(
+          selectedStore,
+          selectedYear,
+        )
+        console.log("Doanh thu theo năm:", data)
+        setRevenueData(data) // data là một mảng 12 tháng, ví dụ [{month: 1, total: 1000000}, ...]
+      } catch (err) {
+        console.error("Lỗi khi lấy doanh thu theo năm:", err)
+      }
+    }
+
+    fetchRevenueOfYear()
+  }, [selectedStore, selectedYear])
+  const currentMonthRevenue = revenueData.find(
+    item => item.month === currentMonth,
+  )
+  const currentMonthTotal = currentMonthRevenue
+    ? currentMonthRevenue.revenue
+    : 0
   if (!userRole) {
     return (
       <div className="text-white p-6">Đang tải thông tin người dùng...</div>
@@ -147,7 +174,7 @@ const StoreManagement = () => {
   }
 
   return (
-    <div className="p-6 space-y-6 min-h-screen bg-gray-900 text-white">
+    <div className="p-6 space-y-6 min-h-screen bg-gray-900 text-white ">
       <h1 className="text-2xl font-bold text-center flex items-center justify-center gap-2">
         <Building2 className="w-6 h-6" />
         Trang Web Quản Lý Cửa Hàng
@@ -311,14 +338,12 @@ const StoreManagement = () => {
 
             <div className="grid grid-cols-2 gap-4 text-sm text-white">
               <div className="space-y-1">
-                <p className="font-medium text-gray-300">Doanh thu hôm nay:</p>
-                <p className="text-green-400 font-semibold">1.200.000 VNĐ</p>
-              </div>
-              <div className="space-y-1">
                 <p className="font-medium text-gray-300">
                   Doanh thu tháng này:
                 </p>
-                <p className="text-yellow-400 font-semibold">23.400.000 VNĐ</p>
+                <p className="text-yellow-400 font-semibold">
+                  {currentMonthTotal.toLocaleString()} VNĐ
+                </p>
               </div>
             </div>
 

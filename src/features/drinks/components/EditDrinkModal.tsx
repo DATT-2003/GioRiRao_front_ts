@@ -223,13 +223,7 @@ const EditDrinkModal = ({ drink, onClose, onUpdate }: EditDrinkModalProps) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div
-        className="bg-gray-800 p-6 rounded-lg w-2/5 max-h-screen overflow-y-auto h-[90%]"
-        style={{
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
-        }}
-      >
+      <div className="bg-gray-800 p-6 rounded-lg w-2/5 max-h-screen overflow-y-auto h-[90%] hide-scrollbar">
         <h2 className="text-2xl text-white mb-4">Edit Drink</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input

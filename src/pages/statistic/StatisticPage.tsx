@@ -186,7 +186,7 @@ const StatisticPage: React.FC = () => {
   }
 
   return (
-    <div className="p-6 bg-gray-900 text-white">
+    <div className="h-screen overflow-y-auto bg-gray-900 text-white p-6 hide-scrollbar">
       <div className="mb-12">
         <h2 className="text-3xl font-semibold text-center text-red-400 mb-6">
           Thống kê doanh thu cửa hàng

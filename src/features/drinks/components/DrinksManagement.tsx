@@ -44,17 +44,10 @@ const DrinksManagement = () => {
       : drinks.filter(drink => drink.category === selectedCategory)
 
   return (
-    <div
-      className="p-4 bg-gray-900 relative top-[70px] overflow-y-auto left-16 rounded-lg w-[90%] h-[85%] flex flex-col overflow-hidden"
-      style={{
-        scrollbarWidth: "none",
-        msOverflowStyle: "none",
-      }}
-    >
-      {/* Header: ẩn khi modal hiển thị */}
+    <div className="  p-6 bg-gray-900 relative top-[70px] left-16 rounded-lg w-[90%] h-[85%] flex flex-col justify-between overflow-hidden">
       {!showCreateModal && !drinkToEdit && (
-        <div className="sticky top-0 bg-gray-900 z-10 p-2">
-          <div className="flex items-center justify-between mb-2">
+        <div className="sticky top-0 bg-gray-900">
+          <div className="flex items-center justify-between mb-4">
             <p className="text-white text-xl font-semibold">Drink Management</p>
           </div>
           <div className="flex gap-2 mb-2 overflow-x-auto">
@@ -86,7 +79,7 @@ const DrinksManagement = () => {
       )}
 
       {/* Nội dung danh sách đồ uống */}
-      <div className="flex-grow">
+      <div className="flex-grow overflow-y-auto hide-scrollbar">
         {loading ? (
           <p className="text-white">Loading drinks...</p>
         ) : error ? (

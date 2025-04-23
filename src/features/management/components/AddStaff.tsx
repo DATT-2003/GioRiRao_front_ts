@@ -102,8 +102,7 @@ const AddStaffForm = () => {
       <form
         id="add-staff-form"
         onSubmit={handleSubmit}
-        className="flex-1 overflow-y-auto w-full max-w-md p-6 space-y-6 rounded-tl-xl rounded-tr-xl shadow-lg bg-gray-900"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
+        className="flex-1 overflow-y-auto w-full max-w-md p-6 space-y-6 rounded-tl-xl rounded-tr-xl shadow-lg bg-gray-900 hide-scrollbar"
       >
         {/* Tên */}
         <div className="space-y-1">
