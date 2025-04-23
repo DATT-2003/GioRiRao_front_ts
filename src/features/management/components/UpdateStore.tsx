@@ -230,7 +230,7 @@ const UpdateStore = () => {
           </select>
         </div> */}
 
-        <div>
+        {/* <div>
           <label className="block font-semibold mb-1 flex items-center">
             <Users2 className="w-5 h-5 mr-2 text-yellow-400" />
             Nhân viên
@@ -287,7 +287,7 @@ const UpdateStore = () => {
               </ul>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <button
           type="submit"

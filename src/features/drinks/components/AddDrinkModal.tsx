@@ -145,7 +145,6 @@ const AddDrinkModal = ({
       !recipe ||
       selectedCustomizations.length === 0 ||
       !thumbnailFile ||
-      // imageFiles.length === 0 ||
       ingredients.length === 0
     ) {
       alert("Vui lòng nhập đầy đủ thông tin và upload ảnh!")

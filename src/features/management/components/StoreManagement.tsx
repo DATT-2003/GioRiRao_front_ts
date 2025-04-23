@@ -47,6 +47,7 @@ const StoreManagement = () => {
         setUserRole(role)
         if (role === "storeManager" && userId) {
           const stores = await managementApi.getStoreByManagerId(userId)
+          console.log("stores", stores)
           setStores(stores)
           if (stores.length > 0) {
             const store = stores[0]
