@@ -6,6 +6,7 @@ import ProtectedRoute from "./features/authentication/components/ProtectedRoute"
 import SettingsPage from "./pages/setting/SettingsPage"
 import OrderListPage from "./pages/orderchecklist/OrderListPage"
 import StatisticPage from "./pages/statistic/StatisticPage"
+import ProfilePage from "./pages/profile/ProfilePage"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
 import InventoryPage from "./pages/inventory/InventoryPage"
@@ -29,6 +30,14 @@ const MainContent = () => {
       <div className="flex-1">
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute allowRoles={["admin","storeManager","staffCashier","staffBarista"]}>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/"
             element={
