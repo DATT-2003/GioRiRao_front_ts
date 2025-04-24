@@ -35,9 +35,15 @@ const NavItem = ({ to, Icon, onClick }: NavItemProps) => (
 
 const Navigation = () => (
   <nav className="w-20 bg-gray-900 p-4 flex flex-col items-center gap-6 h-screen">
-    {/* Logo ShoppingCart */}
+    {/* — Avatar vào trang Profile — */}
     <div className="mb-8">
-      <ShoppingCart className="w-10 h-10 text-white" />
+      <NavLink to="/profile">
+        <img
+          src="/ProfileIcon.jpg"           // hoặc đường dẫn avatar của user
+          alt="User Avatar"
+          className="w-10 h-10 rounded-full object-cover"
+        />
+      </NavLink>
     </div>
 
     {/* Nhóm các icon điều hướng */}
