@@ -29,7 +29,10 @@ const EditDrinkModal = ({ drink, onClose, onUpdate }: EditDrinkModalProps) => {
     drink.shortDescription,
   )
   const [category, setCategory] = useState(drink.category)
-  const [tags, setTags] = useState<string[]>(drink.tags || [])
+  const [tags, setTags] = useState<string[]>(
+    Array.isArray(drink.tags) ? drink.tags.flat() : [],
+  )
+  //Lỗi phần update drink
   const [tagInput, setTagInput] = useState("")
 
   // Customizations: chuyển sang object để dễ chỉnh sửa
@@ -67,14 +70,6 @@ const EditDrinkModal = ({ drink, onClose, onUpdate }: EditDrinkModalProps) => {
     drink.thumbnail,
   )
 
-  // Images: tích lũy các ảnh update (ban đầu dùng ảnh cũ nếu có)
-  // const [imageFiles, setImageFiles] = useState<File[]>([])
-  // const [imagePreviews, setImagePreviews] = useState<string[]>(
-  //   drink.images
-  //     ? drink.images.sort((a, b) => a.order - b.order).map(img => img.url)
-  //     : [],
-  // )
-
   const [loading, setLoading] = useState(false)
 
   // Xử lý file thumbnail
@@ -85,16 +80,6 @@ const EditDrinkModal = ({ drink, onClose, onUpdate }: EditDrinkModalProps) => {
       setThumbnailPreview(URL.createObjectURL(file))
     }
   }
-
-  // Xử lý file images (tích lũy ảnh mới vào danh sách)
-  // const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files) {
-  //     const newFiles = Array.from(e.target.files)
-  //     setImageFiles(prev => [...prev, ...newFiles])
-  //     const newPreviews = newFiles.map(file => URL.createObjectURL(file))
-  //     setImagePreviews(prev => [...prev, ...newPreviews])
-  //   }
-  // }
 
   const handleAddTag = () => {
     if (tagInput.trim()) {
@@ -194,7 +179,7 @@ const EditDrinkModal = ({ drink, onClose, onUpdate }: EditDrinkModalProps) => {
       formData.append("description", description)
       formData.append("shortDescription", shortDescription)
       formData.append("category", category)
-      tags.forEach(tag => formData.append("tags", tag))
+      formData.append("tags", JSON.stringify(tags))
       formData.append("customization", JSON.stringify(selectedCustomizations))
       formData.append("ingredients", JSON.stringify(ingredients))
       formData.append("recipe", recipe)
@@ -238,13 +223,7 @@ const EditDrinkModal = ({ drink, onClose, onUpdate }: EditDrinkModalProps) => {
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div
-        className="bg-gray-800 p-6 rounded-lg w-2/5 max-h-screen overflow-y-auto h-[90%]"
-        style={{
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
-        }}
-      >
+      <div className="bg-gray-800 p-6 rounded-lg w-2/5 max-h-screen overflow-y-auto h-[90%] hide-scrollbar">
         <h2 className="text-2xl text-white mb-4">Edit Drink</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <input
@@ -433,27 +412,6 @@ const EditDrinkModal = ({ drink, onClose, onUpdate }: EditDrinkModalProps) => {
               </div>
             )}
           </div>
-
-          {/* Images
-          <div>
-            <label className="text-white">Images (Multiple Images):</label>
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleImagesChange}
-            />
-            <div className="flex gap-2 mt-2 flex-wrap">
-              {imagePreviews.map((preview, index) => (
-                <img
-                  key={index}
-                  src={preview}
-                  alt="Image Preview"
-                  className="w-20 h-20 object-cover rounded-md border"
-                />
-              ))}
-            </div>
-          </div> */}
 
           {/* Nút Delete bên trái, Cancel & Update bên phải */}
           <div className="flex justify-between">

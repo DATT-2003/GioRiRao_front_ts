@@ -7,6 +7,9 @@ import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import "react-datepicker/dist/react-datepicker.css"
 import { toast } from "react-toastify"
+import { useAppSelector } from "../../app/hooks"
+import { selectStoreFilter } from "../../features/management/managementSlice"
+import { se } from "date-fns/locale"
 
 type ReData = {
   storeId: string
@@ -24,10 +27,11 @@ type TopData = {
 
 const StatisticPage: React.FC = () => {
   const yearsToNow = [2021, 2022, 2023, 2024, 2025]
+  const { selectedStore } = useAppSelector(selectStoreFilter)
   const [monthsToNow, setMonthsToNow] = useState<number[]>([])
   const [topDaysInMonth, setTopDaysInMonth] = useState<number[]>([])
   const [reData, setReData] = useState<ReData>({
-    storeId: "6780d1c957dfc98e89675b55",
+    storeId: selectedStore,
     reYear: null,
     fromReDate: null,
     toReDate: null,
@@ -36,11 +40,12 @@ const StatisticPage: React.FC = () => {
   const [reLabels, setReLabels] = useState<string[]>([])
 
   const [topData, setTopData] = useState<TopData>({
-    storeId: "6780d1c957dfc98e89675b55",
+    storeId: selectedStore,
     topYear: 2025,
     topMonth: null,
     topDay: null,
   })
+
   const [topResult, setTopResult] = useState<number[]>([])
   const [topLabels, setTopLabels] = useState<string[]>([])
 
@@ -181,7 +186,7 @@ const StatisticPage: React.FC = () => {
   }
 
   return (
-    <div className="p-6 bg-gray-900 text-white">
+    <div className="h-screen overflow-y-auto bg-gray-900 text-white p-6 hide-scrollbar">
       <div className="mb-12">
         <h2 className="text-3xl font-semibold text-center text-red-400 mb-6">
           Thống kê doanh thu cửa hàng

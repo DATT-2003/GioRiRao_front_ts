@@ -19,19 +19,17 @@ import AddingToppingList from "../../topping/components/AddingToppingList"
 const DrinkDetail = () => {
   const id = useAppSelector(selectDrinkIdCart)
   const drinkId = useAppSelector(selectDrinkId)
-  const cartItem = useAppSelector(cart => selectCartItem(cart, id))
+  const cartItem = useAppSelector(cart => selectCartItem(cart, drinkId))
   const dispatch = useAppDispatch()
   const [drinkDetail, setDrinkDetail] = useState<IDrink | null>(null)
 
   useEffect(() => {
     async function loadDrinkDetail() {
-      console.log("drinkid", drinkId)
       const drink = await drinkApi.getDrinkDetail(drinkId ? drinkId : "")
       setDrinkDetail(drink)
     }
     loadDrinkDetail()
   }, [drinkId])
-
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -130,11 +128,3 @@ const DrinkDetail = () => {
 }
 
 export default DrinkDetail
-
-/**
- * Nhiệm vụ sáng nay
- * 1. ấn vào giá tiền thì: tổng tiền hiển thị thay đổi, và tiền mặc định của nước thay đổi OKOKOKOK
- * 2. Khi ấn vào add topping thì: hiển thị topping item trong drinkitemdetail, và khi thoát ra, chúng ta cũng thấy topping item trong cartitem hiển thị ở cartlist chưa OKOKOK
- * 3. có thể xóa topping item ra khỏi drinkitem detail OKOKOK
- * 4. khi bấm vào cart item thì nó hiển thị lên drinkitemdetail
- */

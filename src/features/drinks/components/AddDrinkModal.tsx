@@ -145,7 +145,6 @@ const AddDrinkModal = ({
       !recipe ||
       selectedCustomizations.length === 0 ||
       !thumbnailFile ||
-      // imageFiles.length === 0 ||
       ingredients.length === 0
     ) {
       alert("Vui lòng nhập đầy đủ thông tin và upload ảnh!")
@@ -200,13 +199,7 @@ const AddDrinkModal = ({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-      <div
-        className="bg-gray-800 p-6 rounded-lg w-2/5 h-[90%] overflow-y-auto"
-        style={{
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
-        }}
-      >
+      <div className="bg-gray-800 p-6 rounded-lg w-2/5 h-[90%] overflow-y-auto hide-scrollbar">
         <h2 className="text-2xl text-white mb-4">Add New Drink</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {/* Các input cơ bản */}
