@@ -1,9 +1,14 @@
 import React from "react"
-import menuItems from "../staticData"
 import { useAppDispatch } from "../../../app/hooks"
-import { setPopUpTab } from "../settingSlice"
+import { setPopUpTab } from "../managementSlice"
+import { Building2, Users } from "lucide-react"
 
-const SettingsSidebar = () => {
+const managementMenuItems = [
+  { label: "Store Management", keyWord: "storeManagement", Icon: Building2 },
+  { label: "Staff Management", keyWord: "staffManagement", Icon: Users },
+]
+
+const ManagementSidebar = () => {
   const dispatch = useAppDispatch()
 
   const handleTabActive = (tab: string) => {
@@ -12,7 +17,7 @@ const SettingsSidebar = () => {
 
   return (
     <div className="w-[90%] h-[85%] bg-gray-900 text-white relative top-[70px] left-8 overflow-y-hidden rounded-lg">
-      {menuItems.map(item => (
+      {managementMenuItems.map(item => (
         <div
           key={item.label}
           className="cursor-pointer hover:bg-rose-400 pl-1 py-8 flex items-center"
@@ -26,4 +31,4 @@ const SettingsSidebar = () => {
   )
 }
 
-export default SettingsSidebar
+export default ManagementSidebar

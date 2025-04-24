@@ -5,6 +5,8 @@ import {
   Bell,
   Mail,
   LogOut,
+  ShoppingCart,
+  AppWindow,
 } from "lucide-react"
 import { NavLink } from "react-router-dom"
 
@@ -47,7 +49,7 @@ const Navigation = () => (
     {/* Nhóm các icon điều hướng */}
     <div className="flex flex-col gap-6 flex-grow">
       <NavItem to="/" Icon={Home} />
-      <NavItem to="/history" Icon={History} />
+      <NavItem to="/management" Icon={AppWindow} />
       <NavItem to="/statistics" Icon={Mail} />
       <NavItem to="/Orderlist" Icon={Bell} />
       <NavItem to="/settings" Icon={Settings} />

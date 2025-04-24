@@ -21,6 +21,7 @@ const DrinkItemDetail = ({ drinkDetail }: DrinkItemDetailProps) => {
   const priceIndex = useAppSelector(cart =>
     selectCartItemPriceIndex(cart, drinkId),
   )
+
   const [quantity, setQuantity] = useState<number>(cartItem?.quantity ?? 1)
 
   const handleQuantity = async (quantity: number) => {

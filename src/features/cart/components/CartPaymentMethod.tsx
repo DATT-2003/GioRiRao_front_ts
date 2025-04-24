@@ -10,11 +10,14 @@ import {
   setIsCartComfirmationOpen,
   setIsPaymentSuccessOpen,
 } from "../cartSlice"
+import { setNewOrder } from "../../order/orderSlice"
 import convertCartItemsToOrderDetails from "../../../utils/transformCarItemToOrderDetail"
 import authApi from "../../authentication/authApi"
 import { IUserSession } from "../../authentication/authTypes"
+import { selectStoreFilter } from "../../../features/management/managementSlice"
 
 const CartPaymentMethod = () => {
+  const { selectedStore } = useAppSelector(selectStoreFilter)
   const cartList = useAppSelector(selectCartItems)
   const cartTotalPrice = useAppSelector(selectCartTotalPrice) as number
   const dispatch = useAppDispatch()
@@ -35,14 +38,16 @@ setMe(meDB)
   const handleComfirmPayment = async () => {
     const items = convertCartItemsToOrderDetails(cartList)
     const order = {
+      storeId: selectedStore,
       createdBy: me!.userId,
-      storeId: me!.storeId,
+      // storeId: me!.storeId,
       items,
       paymentMethod: selectedMethod as "Cash" | "MOBILE_PAYMENT",
       total: cartTotalPrice,
     }
     const newOrder = await orderApi.createOrder(order)
     if (newOrder) {
+      dispatch(setNewOrder(newOrder))
       dispatch(setIsCartComfirmationOpen({ isOpen: false }))
       dispatch(setIsPaymentSuccessOpen({ isOpen: true }))
       dispatch(removeCartList())

@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react"
 import drinkApi from "../drinkApi"
 import { IDrink } from "../drinkTypes"
 import { Pen } from "lucide-react"
-import AddDrinkModal from "./AddDrinkModal" // Import modal thêm mới
-import EditDrinkModal from "./EditDrinkModal" // Import modal chỉnh sửa
+import AddDrinkModal from "./AddDrinkModal"
+import EditDrinkModal from "./EditDrinkModal"
 
 const DrinksManagement = () => {
   const [drinks, setDrinks] = useState<IDrink[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
-  const [showCreateModal, setShowCreateModal] = useState(false) // State mở modal thêm mới
-  const [drinkToEdit, setDrinkToEdit] = useState<IDrink | null>(null) // State cho modal chỉnh sửa
-  const [selectedCategory, setSelectedCategory] = useState<string>("All") // State cho category đã chọn
+  const [showCreateModal, setShowCreateModal] = useState(false)
+  const [drinkToEdit, setDrinkToEdit] = useState<IDrink | null>(null)
+  const [selectedCategory, setSelectedCategory] = useState<string>("All")
 
   useEffect(() => {
     fetchDrinks()
@@ -34,64 +34,52 @@ const DrinksManagement = () => {
     setDrinkToEdit(drink)
   }
 
-  // Tạo danh sách các category không trùng lặp từ drinks
   const categories = Array.from(
     new Set(drinks.map(drink => drink.category)),
   ).filter(Boolean)
 
-  // Lọc danh sách drink theo selectedCategory
   const filteredDrinks =
     selectedCategory === "All"
       ? drinks
       : drinks.filter(drink => drink.category === selectedCategory)
 
   return (
-    <div
-      // Giảm khoảng cách top từ 70px xuống 50px
-      className="p-4 bg-gray-900 relative top-[70px] overflow-y-auto left-16 rounded-lg w-[90%] h-[85%] flex flex-col overflow-hidden"
-      style={{
-        scrollbarWidth: "none",
-        msOverflowStyle: "none",
-      }}
-    >
-      {/* Phần header cố định */}
-      {/* Giảm padding từ p-4 xuống p-2 */}
-      <div className="top-0 bg-gray-900 z-10 p-2">
-        {/* Giảm margin-bottom từ mb-4 xuống mb-2 */}
-        <div className="flex items-center justify-between mb-2">
-          <p className="text-white text-xl font-semibold">Drink Management</p>
-        </div>
-
-        {/* Giảm gap từ 4 xuống 2, và margin-bottom xuống mb-2 */}
-        <div className="flex gap-2 mb-2 overflow-x-auto">
-          <button
-            className={`px-4 py-1 rounded ${
-              selectedCategory === "All"
-                ? "bg-blue-600 text-white"
-                : "bg-gray-900 text-gray-300"
-            }`}
-            onClick={() => setSelectedCategory("All")}
-          >
-            All
-          </button>
-          {categories.map(category => (
+    <div className="  p-6 bg-gray-900 relative top-[70px] left-16 rounded-lg w-[90%] h-[85%] flex flex-col justify-between overflow-hidden">
+      {!showCreateModal && !drinkToEdit && (
+        <div className="sticky top-0 bg-gray-900">
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-white text-xl font-semibold">Drink Management</p>
+          </div>
+          <div className="flex gap-2 mb-2 overflow-x-auto">
             <button
-              key={category}
               className={`px-4 py-1 rounded ${
-                selectedCategory === category
+                selectedCategory === "All"
                   ? "bg-blue-600 text-white"
                   : "bg-gray-900 text-gray-300"
               }`}
-              onClick={() => setSelectedCategory(category)}
+              onClick={() => setSelectedCategory("All")}
             >
-              {category}
+              All
             </button>
-          ))}
+            {categories.map(category => (
+              <button
+                key={category}
+                className={`px-4 py-1 rounded ${
+                  selectedCategory === category
+                    ? "bg-blue-600 text-white"
+                    : "bg-gray-900 text-gray-300"
+                }`}
+                onClick={() => setSelectedCategory(category)}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Nội dung danh sách đồ uống */}
-      <div className="flex-grow">
+      <div className="flex-grow overflow-y-auto hide-scrollbar">
         {loading ? (
           <p className="text-white">Loading drinks...</p>
         ) : error ? (
@@ -106,7 +94,7 @@ const DrinksManagement = () => {
               <span className="text-gray-300 text-lg">+ Add new drink</span>
             </div>
 
-            {/* Danh sách đồ uống đã được filter */}
+            {/* Danh sách đồ uống */}
             {filteredDrinks.length > 0 ? (
               filteredDrinks.map(drink => (
                 <div
@@ -140,19 +128,23 @@ const DrinksManagement = () => {
 
       {/* Modal Add Drink */}
       {showCreateModal && (
-        <AddDrinkModal
-          onClose={() => setShowCreateModal(false)}
-          onCreate={fetchDrinks} // Load lại danh sách khi thêm thành công
-        />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+          <AddDrinkModal
+            onClose={() => setShowCreateModal(false)}
+            onCreate={fetchDrinks}
+          />
+        </div>
       )}
 
       {/* Modal Edit Drink */}
       {drinkToEdit && (
-        <EditDrinkModal
-          drink={drinkToEdit}
-          onClose={() => setDrinkToEdit(null)}
-          onUpdate={fetchDrinks} // Load lại danh sách khi cập nhật thành công
-        />
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
+          <EditDrinkModal
+            drink={drinkToEdit}
+            onClose={() => setDrinkToEdit(null)}
+            onUpdate={fetchDrinks}
+          />
+        </div>
       )}
     </div>
   )

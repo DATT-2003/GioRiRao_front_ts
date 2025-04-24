@@ -69,16 +69,6 @@ const AddDrinkModal = ({
     }
   }
 
-  // // Xử lý file images
-  // const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files) {
-  //     const newFiles = Array.from(e.target.files)
-  //     setImageFiles(prev => [...prev, ...newFiles])
-  //     const newPreviews = newFiles.map(file => URL.createObjectURL(file))
-  //     setImagePreviews(prev => [...prev, ...newPreviews])
-  //   }
-  // }
-
   // Xử lý tag
   const handleAddTag = () => {
     if (tagInput.trim()) {
@@ -145,7 +135,6 @@ const AddDrinkModal = ({
       !recipe ||
       selectedCustomizations.length === 0 ||
       !thumbnailFile ||
-      // imageFiles.length === 0 ||
       ingredients.length === 0
     ) {
       alert("Vui lòng nhập đầy đủ thông tin và upload ảnh!")
@@ -166,14 +155,7 @@ const AddDrinkModal = ({
       formData.append("ingredients", JSON.stringify(ingredients))
       formData.append("recipe", recipe)
       formData.append("thumbnail", thumbnailFile)
-      // imageFiles.forEach(file => formData.append("images", file))
 
-      // // In ra FormData để kiểm tra (chỉ dùng cho debug)
-      // for (let [key, value] of formData.entries()) {
-      //   console.log(key, value)
-      // }
-
-      // Giả sử response trả về kiểu { newDrink: IDrink }
       const response: { newDrink: IDrink } =
         await drinkApi.createDrink(formData)
 
@@ -399,27 +381,6 @@ const AddDrinkModal = ({
               </div>
             )}
           </div>
-
-          {/* Images */}
-          {/* <div>
-            <label className="text-white">Images (Multiple Images):</label>
-            <input
-              type="file"
-              accept="image/*"
-              multiple
-              onChange={handleImagesChange}
-            />
-            <div className="flex gap-2 mt-2 flex-wrap">
-              {imagePreviews.map((preview, index) => (
-                <img
-                  key={index}
-                  src={preview}
-                  alt="Image Preview"
-                  className="w-20 h-20 object-cover rounded-md border"
-                />
-              ))}
-            </div>
-          </div> */}
 
           {/* Submit & Cancel Buttons */}
           <div className="flex justify-end gap-2">

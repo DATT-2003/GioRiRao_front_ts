@@ -3,9 +3,9 @@ import OrderEndpoint from "./orderEndpoints"
 import { IOrder } from "./orderTypes"
 
 const orderApi = {
-  async createOrder(order: IOrder): Promise<{ order: IOrder }> {
+  async createOrder(order: IOrder): Promise<IOrder> {
     const response = await api.post(OrderEndpoint.createOrder(), order)
-    return response.data.message
+    return response.data.newOrder // đúng là kiểu IOrder
   },
 }
 

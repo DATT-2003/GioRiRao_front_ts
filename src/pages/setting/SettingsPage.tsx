@@ -18,7 +18,7 @@ const SettingsPage = () => {
       <div className="w-[28%]">
         <SettingsSidebar />
       </div>
-      h{/* Main content area */}
+      {/* Main content area */}
       <div className="w-[90%]">
         {activePopUp === "drinkManagement" && <DrinksManagement />}
         {activePopUp === "toppingManagement" && <ToppingManagement />}
