@@ -194,6 +194,7 @@ const EditDrinkModal = ({ drink, onClose, onUpdate }: EditDrinkModalProps) => {
       formData.append("description", description)
       formData.append("shortDescription", shortDescription)
       formData.append("category", category)
+      console.log("tag", tags)
       tags.forEach(tag => formData.append("tags", tag))
       formData.append("customization", JSON.stringify(selectedCustomizations))
       formData.append("ingredients", JSON.stringify(ingredients))

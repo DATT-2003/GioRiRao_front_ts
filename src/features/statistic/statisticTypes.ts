@@ -13,3 +13,9 @@ export interface DrinkStatistic {
   drinkName: string
   totalQuantity: number
 }
+
+export interface PredictedRevenue {
+  day: number;
+  month: number;
+  predicted_revenue: number;
+}

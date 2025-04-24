@@ -46,6 +46,7 @@ const Navigation = () => (
       <NavItem to="/statistics" Icon={Mail} />
       <NavItem to="/Orderlist" Icon={Bell} />
       <NavItem to="/settings" Icon={Settings} />
+      <NavItem to="/inventories" Icon={Settings} />
     </div>
 
     {/* Đẩy LogOut xuống dưới */}

@@ -1,5 +1,9 @@
 import api from "../../app/api"
-import { IStoreRevenue, DrinkStatistic } from "./statisticTypes"
+import {
+  IStoreRevenue,
+  DrinkStatistic,
+  PredictedRevenue,
+} from "./statisticTypes"
 import StatisticEndpoint from "./statisticEndpoints"
 
 const statisticApi = {
@@ -54,6 +58,18 @@ const statisticApi = {
       StatisticEndpoint.getTopTenDrinksByMonth(storeId, month, year),
     )
     return response.data.drinks
+  },
+
+  async getRevenueNextMonth(storeId: string): Promise<PredictedRevenue[]> {
+    const response = await api.get(
+      StatisticEndpoint.getRevenueNextMonth(storeId),
+    )
+    console.log(
+      "response.data.predictedRevenue.predictedRevenues",
+      response.data.predictedRevenue.predictedRevenues,
+    )
+
+    return response.data.predictedRevenue.predictedRevenues
   },
 }
 

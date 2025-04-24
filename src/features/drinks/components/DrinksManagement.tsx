@@ -56,7 +56,7 @@ const DrinksManagement = () => {
     >
       {/* Phần header cố định */}
       {/* Giảm padding từ p-4 xuống p-2 */}
-      <div className="sticky top-0 bg-gray-900 z-10 p-2">
+      <div className="top-0 bg-gray-900 z-10 p-2">
         {/* Giảm margin-bottom từ mb-4 xuống mb-2 */}
         <div className="flex items-center justify-between mb-2">
           <p className="text-white text-xl font-semibold">Drink Management</p>

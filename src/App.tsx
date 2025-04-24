@@ -8,6 +8,7 @@ import OrderListPage from "./pages/orderchecklist/OrderListPage"
 import StatisticPage from "./pages/statistic/StatisticPage"
 import { ToastContainer } from "react-toastify"
 import "react-toastify/dist/ReactToastify.css"
+import InventoryPage from "./pages/inventory/InventoryPage"
 
 const App = () => {
   return (
@@ -69,6 +70,14 @@ const MainContent = () => {
                 allowRoles={["storeManager", "staffBarista", "admin"]}
               >
                 <OrderListPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/inventories"
+            element={
+              <ProtectedRoute allowRoles={["storeManager", "admin"]}>
+                <InventoryPage />
               </ProtectedRoute>
             }
           />

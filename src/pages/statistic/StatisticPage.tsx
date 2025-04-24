@@ -1,12 +1,14 @@
 import React, { useState, useEffect, ChangeEvent } from "react"
 import VerticalBarChart from "./components/VerticalBarChart"
 import HorizontalBarChart from "./components/HorizontalBarChart"
+import LineChart from "./components/LineChart"
 import { getMonthToNow, getAllDaysInMonth } from "../../utils/dateFunction"
 import statisticApi from "../../features/statistic/statisticApi"
 import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css"
 import "react-datepicker/dist/react-datepicker.css"
 import { toast } from "react-toastify"
+import moment from "moment"
 
 type ReData = {
   storeId: string
@@ -44,10 +46,19 @@ const StatisticPage: React.FC = () => {
   const [topResult, setTopResult] = useState<number[]>([])
   const [topLabels, setTopLabels] = useState<string[]>([])
 
+  const [pastLabels, setPastLabels] = useState<number[]>([])
+  const [futureLabels, setFutureLabels] = useState<number[]>([])
+  const [actualValues, setActualValues] = useState<number[]>([])
+  const [predictedValues, setPredictedValues] = useState<number[]>([])
+
   useEffect(() => {
     const months = getMonthToNow()
     setMonthsToNow(months)
   }, [])
+
+  useEffect(() => {
+    console.log("reData", reData)
+  }, [reData])
 
   const handleSetYear = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedYear = e.target.value
@@ -180,6 +191,47 @@ const StatisticPage: React.FC = () => {
     }
   }
 
+  const handleRevenuePredictSubmit = async () => {
+    const fromDate: Date = moment().startOf("month").toDate()
+    const toDate: Date = moment().endOf("month").toDate()
+    const storeId = "6780d1c957dfc98e89675b55"
+
+    const pastRevenue = await statisticApi.getRevenueDayInRange(
+      storeId,
+      fromDate,
+      toDate,
+    )
+    const furtureRevenue = await statisticApi.getRevenueNextMonth(storeId)
+
+    let pastRe = []
+    let pastLabels = []
+
+    for (const past of pastRevenue) {
+      pastRe.push(past.revenue)
+      pastLabels.push(past.day)
+    }
+
+    let fuRe = []
+    let fuLabels = []
+
+    for (const fu of furtureRevenue) {
+      fuRe.push(fu.predicted_revenue)
+      fuLabels.push(fu.day)
+    }
+
+    console.log("fuRe", fuRe)
+    console.log("fuLabels", fuLabels)
+    console.log("pastRe", pastRe)
+    console.log("pastLabels", pastLabels)
+
+    setPastLabels(
+      pastLabels.filter((label): label is number => label !== undefined),
+    )
+    setFutureLabels(fuLabels)
+    setActualValues(pastRe)
+    setPredictedValues(fuRe)
+  }
+
   return (
     <div className="p-6 bg-gray-900 text-white">
       <div className="mb-12">
@@ -284,6 +336,30 @@ const StatisticPage: React.FC = () => {
             data={topResult}
             title="Top Đồ Uống Bán Chạy"
             datasetLabel="Số lượng bán ra"
+          />
+        </div>
+      </div>
+
+      <div className="mt-10 border-t border-gray-700">
+        <h2 className="text-3xl font-semibold text-center text-red-400 my-6">
+          Dự đoán doanh thu 1 tháng
+        </h2>
+
+        <div className="flex gap-4 p-4 justify-center pt-6">
+          <button
+            className="border border-gray-700 rounded-xl p-2 bg-red-400 text-gray-900 hover:bg-red-500 transition"
+            onClick={handleRevenuePredictSubmit}
+          >
+            Xem Dự Đoán
+          </button>
+        </div>
+
+        <div className="max-w-3xl mx-auto">
+          <LineChart
+            pastLabels={pastLabels}
+            futureLabels={futureLabels}
+            actualValues={actualValues}
+            predictedValues={predictedValues}
           />
         </div>
       </div>
