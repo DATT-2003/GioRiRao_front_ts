@@ -159,10 +159,7 @@ export const cartSlice = createAppSlice({
 
         state.isCartComfirmationOpen = isOpen
 
-        // console.log(
-        //   "payload setIsCartComfirmationOpen",
-        //   state.isCartComfirmationOpen,
-        // )
+
       },
     ),
     setIsPaymentSuccessOpen: create.reducer(
@@ -171,10 +168,6 @@ export const cartSlice = createAppSlice({
 
         state.isPaymentSuccessOpen = isOpen
 
-        // console.log(
-        //   "payload isPaymentSuccessOpen",
-        //   state.isPaymentSuccessOpen,
-        // )
       },
     ),
     removeCartList: create.reducer(state => {
@@ -184,7 +177,6 @@ export const cartSlice = createAppSlice({
   }),
   selectors: {
     selectCartItems: cart => {
-      console.log("selectCartItems", cart.cartItems)
       return cart.cartItems
     },
 
@@ -198,28 +190,20 @@ export const cartSlice = createAppSlice({
     },
 
     selectToppings: (cart, id) => {
-      // console.log("cart.cartItems", cart.cartItems)
       const existingItemIndex = cart.cartItems?.findIndex(
         item => item.id === id,
       )
 
-      // console.log("existingItemIndex selectToppings", existingItemIndex)
 
       if (existingItemIndex === undefined || existingItemIndex === -1) {
         return []
       }
-
-      // console.log(
-      //   "cart.cartItems[existingItemIndex].toppings",
-      //   cart.cartItems[existingItemIndex].toppings,
-      // )
 
       return cart.cartItems[existingItemIndex].toppings
     },
 
     selectCartTotalPrice: cart => {
       if (!Array.isArray(cart.cartItems)) {
-        console.log("cart.cartItems", cart.cartItems)
         return []
       }
 

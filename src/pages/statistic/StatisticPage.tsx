@@ -56,10 +56,6 @@ const StatisticPage: React.FC = () => {
     setMonthsToNow(months)
   }, [])
 
-  useEffect(() => {
-    console.log("reData", reData)
-  }, [reData])
-
   const handleSetYear = (e: ChangeEvent<HTMLSelectElement>) => {
     const selectedYear = e.target.value
 
@@ -104,9 +100,7 @@ const StatisticPage: React.FC = () => {
 
       setReResult(results)
       setReLabels(labels)
-      console.log("co chay khong 2", reData.reYear)
     } else {
-      console.log("co chay khong")
       if (!reData.fromReDate || !reData.toReDate) {
         toast.error("Vui lòng chọn đầy đủ ngày bắt đầu và kết thúc.")
         return
@@ -178,7 +172,6 @@ const StatisticPage: React.FC = () => {
         topData.topYear,
       )
 
-      console.log(topD)
       let results = []
       let labels = []
       for (const d of topD) {
@@ -218,11 +211,6 @@ const StatisticPage: React.FC = () => {
       fuRe.push(fu.predicted_revenue)
       fuLabels.push(fu.day)
     }
-
-    console.log("fuRe", fuRe)
-    console.log("fuLabels", fuLabels)
-    console.log("pastRe", pastRe)
-    console.log("pastLabels", pastLabels)
 
     setPastLabels(
       pastLabels.filter((label): label is number => label !== undefined),

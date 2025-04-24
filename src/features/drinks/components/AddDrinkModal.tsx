@@ -168,15 +168,14 @@ const AddDrinkModal = ({
       formData.append("thumbnail", thumbnailFile)
       // imageFiles.forEach(file => formData.append("images", file))
 
-      // In ra FormData để kiểm tra (chỉ dùng cho debug)
-      for (let [key, value] of formData.entries()) {
-        console.log(key, value)
-      }
+      // // In ra FormData để kiểm tra (chỉ dùng cho debug)
+      // for (let [key, value] of formData.entries()) {
+      //   console.log(key, value)
+      // }
 
       // Giả sử response trả về kiểu { newDrink: IDrink }
       const response: { newDrink: IDrink } =
         await drinkApi.createDrink(formData)
-      console.log("Response from API:", response)
 
       if (response && response.newDrink) {
         alert("Drink created successfully!")

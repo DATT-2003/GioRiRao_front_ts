@@ -8,7 +8,6 @@ const authApi = {
       email,
       password,
     })
-    console.log("login admin authApi", response)
     return response.data.message
   },
   async getMeInfo(): Promise<IUserSession> {
@@ -17,7 +16,6 @@ const authApi = {
   },
   async isAuth(): Promise<boolean> {
     const response = await api.get(AuthEndpoint.verify)
-    console.log("isAUth", response)
     return response.data.isAuth
   },
   async logOut(): Promise<string> {

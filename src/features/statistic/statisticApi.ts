@@ -12,18 +12,12 @@ const statisticApi = {
     fromDate: Date,
     toDate: Date,
   ): Promise<IStoreRevenue[]> {
-    console.log("storeId statisticApi", storeId)
-    console.log("fromDate statisticApi", fromDate)
-    console.log("toDate statisticApi", toDate)
-
     const response = await api.post(StatisticEndpoint.getRevenueDayInRange(), {
       storeId,
       fromDate,
       toDate,
     })
 
-    console.log("response.data.revenues", response.data.revenues)
-    console.log("response.data", response.data)
     return response.data.revenues
   },
 
@@ -63,10 +57,6 @@ const statisticApi = {
   async getRevenueNextMonth(storeId: string): Promise<PredictedRevenue[]> {
     const response = await api.get(
       StatisticEndpoint.getRevenueNextMonth(storeId),
-    )
-    console.log(
-      "response.data.predictedRevenue.predictedRevenues",
-      response.data.predictedRevenue.predictedRevenues,
     )
 
     return response.data.predictedRevenue.predictedRevenues

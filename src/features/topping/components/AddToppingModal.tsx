@@ -40,7 +40,6 @@ const AddToppingModal = ({
       formData.append("thumbnail", image)
 
       const response = await toppingApi.createTopping(formData)
-      console.log("Response from API:", response) // 👉 Kiểm tra response
 
       if (response && response.newTopping) {
         alert("Topping created successfully!")

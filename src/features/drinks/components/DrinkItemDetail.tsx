@@ -46,7 +46,6 @@ const DrinkItemDetail = ({ drinkDetail }: DrinkItemDetailProps) => {
     }
 
     const numValue = Number(value)
-    console.log("numValue", numValue)
     if (numValue >= 1) {
       setQuantity(numValue)
       dispatch(

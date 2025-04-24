@@ -29,7 +29,6 @@ const DrinksList = () => {
     if (!searchKey) return // Skip API call if searchKey is empty
 
     async function loadDrinksBySearchKey() {
-      // console.log("searchKey from SearchBar", searchKey)
       const drinks = await drinkApi.searchDrinks(`${searchKey}`)
       setDrinks(drinks)
     }

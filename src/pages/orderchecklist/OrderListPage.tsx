@@ -1,28 +1,33 @@
-import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../app/hooks";
-import { fetchOrders, markAsDone } from "../../features/orderlist/orderSlice";
-import { IOrder } from "../../features/orderlist/components/orderlistTypes";
-import OrderDetailModal from "../../features/orderlist/components/OrderDetailModal";
+import { useEffect, useState } from "react"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { fetchOrders, markAsDone } from "../../features/orderlist/orderSlice"
+import { IOrder } from "../../features/orderlist/components/orderlistTypes"
+import OrderDetailModal from "../../features/orderlist/components/OrderDetailModal"
+import authApi from "../../features/authentication/authApi"
+import { a } from "vitest/dist/suite-IbNSsUWN.js"
 
 const OrderListPage = () => {
-  const dispatch = useAppDispatch();
-  const { orders, loading, error } = useAppSelector((state) => state.orderlist);
-  const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
+  const dispatch = useAppDispatch()
+  const { orders, loading, error } = useAppSelector(state => state.orderlist)
+  const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null)
 
   useEffect(() => {
-    const storeId = localStorage.getItem("storeId");
-    if (storeId) {
-      dispatch(fetchOrders(storeId));
+    const fetchData = async () => {
+      const me = await authApi.getMeInfo()
+      if (me.storeId) {
+        dispatch(fetchOrders(me.storeId))
+      }
     }
-  }, [dispatch]);
+    fetchData()
+  }, [dispatch])
 
   const sortedOrders = Array.isArray(orders)
     ? [...orders].sort((a, b) => {
-        if (a.status === "PENDING" && b.status !== "PENDING") return -1;
-        if (a.status !== "PENDING" && b.status === "PENDING") return 1;
-        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+        if (a.status === "PENDING" && b.status !== "PENDING") return -1
+        if (a.status !== "PENDING" && b.status === "PENDING") return 1
+        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
       })
-    : [];
+    : []
 
   return (
     <div className="min-h-screen bg-background p-8 text-foreground">
@@ -36,7 +41,7 @@ const OrderListPage = () => {
       )}
 
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {sortedOrders.map((order) => (
+        {sortedOrders.map(order => (
           <div
             key={order._id}
             onClick={() => setSelectedOrder(order)}
@@ -61,11 +66,11 @@ const OrderListPage = () => {
         <OrderDetailModal
           order={selectedOrder}
           onClose={() => setSelectedOrder(null)}
-          onMarkDone={(orderId) => dispatch(markAsDone(orderId))}
+          onMarkDone={orderId => dispatch(markAsDone(orderId))}
         />
       )}
     </div>
-  );
-};
+  )
+}
 
-export default OrderListPage;
+export default OrderListPage

@@ -5,7 +5,6 @@ import { IProfile } from "../types/profileTypes";
 const profileApi = {
   async getById(staffId: string): Promise<IProfile> {
     const response = await api.get(ProfileEndpoints.getById(staffId));
-    console.log("getById response", response.data.staff);
     return response.data.staff;
   },
 

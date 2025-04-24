@@ -1,5 +1,5 @@
 import { Check } from "lucide-react"
-import React, { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { methods } from "../staticData"
 import orderApi from "../../order/orderApi"
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
@@ -11,32 +11,42 @@ import {
   setIsPaymentSuccessOpen,
 } from "../cartSlice"
 import convertCartItemsToOrderDetails from "../../../utils/transformCarItemToOrderDetail"
+import authApi from "../../authentication/authApi"
+import { IUserSession } from "../../authentication/authTypes"
 
 const CartPaymentMethod = () => {
   const cartList = useAppSelector(selectCartItems)
-  const cartTotalPrice = useAppSelector(selectCartTotalPrice)
+  const cartTotalPrice = useAppSelector(selectCartTotalPrice) as number
   const dispatch = useAppDispatch()
   const [selectedMethod, setSelectedMethod] = useState("Cash")
+  const [me, setMe] = useState<IUserSession | null>(null)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const meDB = await authApi.getMeInfo()
+setMe(meDB)
+    }
+    fetchData()
+  }, [])
+
   const handleClose = () => {
     dispatch(setIsCartComfirmationOpen({ isOpen: false }))
   }
   const handleComfirmPayment = async () => {
     const items = convertCartItemsToOrderDetails(cartList)
     const order = {
-      createdBy: "677fa3d96ee79a6d5eed1f41",
-      storeId: "6780d1c957dfc98e89675b55",
+      createdBy: me!.userId,
+      storeId: me!.storeId,
       items,
-      paymentMethod: selectedMethod as "Cash" | "CARD" | "MOBILE_PAYMENT",
+      paymentMethod: selectedMethod as "Cash" | "MOBILE_PAYMENT",
       total: cartTotalPrice,
     }
     const newOrder = await orderApi.createOrder(order)
     if (newOrder) {
-      console.log("are you running", newOrder)
       dispatch(setIsCartComfirmationOpen({ isOpen: false }))
       dispatch(setIsPaymentSuccessOpen({ isOpen: true }))
       dispatch(removeCartList())
     } else {
-      console.log("why you wrong", newOrder)
     }
   }
   return (

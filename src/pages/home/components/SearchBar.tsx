@@ -15,14 +15,11 @@ const SearchBar = () => {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      console.log("Enter key pressed", searchValue)
       dispatch(setSearchKey(searchValue))
     }
   }
 
   const handleButtonClicked = () => {
-    console.log("Search Btn key pressed")
-
     dispatch(setSearchKey(searchValue))
   }
 
