@@ -46,6 +46,10 @@ const AddStaffForm = () => {
     fetchUserRole()
   }, [])
 
+  useEffect(() => {
+    console.log("selectedStore", selectedStore)
+  }, [selectedStore])
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
@@ -72,10 +76,21 @@ const AddStaffForm = () => {
 
     try {
       const datastaff = await managementApi.createStaff(data)
-      await managementApi.updateStore(selectedStore, {
-        $push: { staffs: datastaff._id },
-      })
+
+      console.log("datastaff", datastaff)
+
+      if (datastaff.role === "storeManager") {
+        await managementApi.updateStore(selectedStore, {
+          managerId: datastaff._id,
+        })
+      } else {
+        await managementApi.updateStore(selectedStore, {
+          $push: { staffs: datastaff._id },
+        })
+      }
+
       alert("Tạo nhân viên thành công!")
+      // navigate("/management/addstore")
       handleBackToStore()
     } catch (error) {
       console.error("Error creating staff:", error)

@@ -191,14 +191,15 @@ const StatisticPage: React.FC = () => {
   const handleRevenuePredictSubmit = async () => {
     const fromDate: Date = moment().startOf("month").toDate()
     const toDate: Date = moment().endOf("month").toDate()
-    const storeId = "6780d1c957dfc98e89675b55"
+
+    console.log("selectedStore", selectedStore)
 
     const pastRevenue = await statisticApi.getRevenueDayInRange(
-      storeId,
+      selectedStore,
       fromDate,
       toDate,
     )
-    const furtureRevenue = await statisticApi.getRevenueNextMonth(storeId)
+    const furtureRevenue = await statisticApi.getRevenueNextMonth(selectedStore)
 
     let pastRe = []
     let pastLabels = []

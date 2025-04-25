@@ -39,7 +39,14 @@ const MainContent = () => {
           <Route
             path="/profile"
             element={
-              <ProtectedRoute allowRoles={["admin","storeManager","staffCashier","staffBarista"]}>
+              <ProtectedRoute
+                allowRoles={[
+                  "admin",
+                  "storeManager",
+                  "staffCashier",
+                  "staffBarista",
+                ]}
+              >
                 <ProfilePage />
               </ProtectedRoute>
             }
@@ -48,7 +55,7 @@ const MainContent = () => {
             path="/"
             element={
               <ProtectedRoute
-                allowRoles={["storeManager", "staffCashier", "admin"]}
+                allowRoles={["storeManager", "staffCashier", "staffBarista"]}
               >
                 <Home />
               </ProtectedRoute>
@@ -81,9 +88,7 @@ const MainContent = () => {
           <Route
             path="/Orderlist"
             element={
-              <ProtectedRoute
-                allowRoles={["storeManager", "staffBarista", "admin"]}
-              >
+              <ProtectedRoute allowRoles={["storeManager", "staffBarista"]}>
                 <OrderListPage />
               </ProtectedRoute>
             }
@@ -91,7 +96,9 @@ const MainContent = () => {
           <Route
             path="/inventories"
             element={
-              <ProtectedRoute allowRoles={["storeManager", "admin"]}>
+              <ProtectedRoute
+                allowRoles={["storeManager", "admin", "staffBarista"]}
+              >
                 <InventoryPage />
               </ProtectedRoute>
             }

@@ -82,6 +82,7 @@ export const managementSlice = createAppSlice({
 
 export const { setPopUpTab, setSelectedStoreStaffInfo, setStoreFilter } =
   managementSlice.actions
+
 export const {
   selectPopUpTab,
   selectSelectedStoreStaffIds,

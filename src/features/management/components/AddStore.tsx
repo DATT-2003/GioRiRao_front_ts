@@ -10,25 +10,45 @@ const AddStoreForm = () => {
   const [areas, setAreas] = useState<IArea[]>([])
   const [staffs, setStaffs] = useState<IStaff[]>([])
 
-  const [formData, setFormData] = useState({
+  const initialFormData = {
     name: "",
     address: "",
     phone: "",
     email: "",
     cityId: "",
     areaId: "",
-    managerId: "",
-    staffs: [] as string[],
-  })
+    // managerId: "",
+    // staffs: [] as string[],
+  }
+
+  const getInitialFormData = (): typeof initialFormData => {
+    const savedData = localStorage.getItem("formData")
+    return savedData
+      ? JSON.parse(savedData)
+      : {
+          name: "",
+          address: "",
+          phone: "",
+          email: "",
+          cityId: "",
+          areaId: "",
+          // managerId: "",
+          // staffs: [],
+        }
+  }
+
+  const [formData, setFormData] = useState(getInitialFormData)
+
+  useEffect(() => {
+    localStorage.setItem("formData", JSON.stringify(formData))
+    console.log("Form data saved to localStorage:", formData)
+  }, [formData])
 
   useEffect(() => {
     const fetchData = async () => {
-      const [citiesData, staffsData] = await Promise.all([
-        managementApi.getCities(),
-        managementApi.getAllStaffs(),
-      ])
+      const citiesData = await managementApi.getCities()
+
       setCities(citiesData)
-      setStaffs(staffsData)
     }
     fetchData()
   }, [])
@@ -47,7 +67,7 @@ const AddStoreForm = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
+    setFormData((prev: typeof formData) => ({ ...prev, [name]: value }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -58,6 +78,21 @@ const AddStoreForm = () => {
     try {
       await managementApi.createStore(payload)
       alert("Tạo cửa hàng thành công!")
+      // Reset formData
+      const initialFormData = {
+        name: "",
+        address: "",
+        phone: "",
+        email: "",
+        cityId: "",
+        areaId: "",
+        // managerId: "",
+        // staffs: [] as string[],
+      }
+      setFormData(initialFormData)
+
+      // Xoá khỏi localStorage
+      localStorage.removeItem("formData")
       navigate("/management")
     } catch (error) {
       console.error("Lỗi tạo cửa hàng:", error)
@@ -85,6 +120,7 @@ const AddStoreForm = () => {
           <input
             type="text"
             name="name"
+            value={formData.name}
             className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             onChange={handleChange}
           />
@@ -97,6 +133,7 @@ const AddStoreForm = () => {
           <input
             type="text"
             name="address"
+            value={formData.address}
             className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             onChange={handleChange}
           />
@@ -109,6 +146,7 @@ const AddStoreForm = () => {
           <input
             type="text"
             name="phone"
+            value={formData.phone}
             className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             onChange={handleChange}
           />
@@ -121,6 +159,7 @@ const AddStoreForm = () => {
           <input
             type="email"
             name="email"
+            value={formData.email}
             className="w-full p-2 rounded bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             onChange={handleChange}
           />
@@ -165,7 +204,7 @@ const AddStoreForm = () => {
         </div>
 
         {/* Quản lý */}
-        <div>
+        {/* <div>
           <label className="block font-semibold mb-1 text-gray-300">
             Người quản lý
           </label>
@@ -192,7 +231,7 @@ const AddStoreForm = () => {
               + Nhân viên
             </button>
           </div>
-        </div>
+        </div> */}
 
         <button
           type="submit"

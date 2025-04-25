@@ -1,4 +1,3 @@
-import { createStore } from "@reduxjs/toolkit"
 
 const ManagementBase: string = "/management"
 const AreaBase: string = "/areas"

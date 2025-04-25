@@ -17,10 +17,13 @@ import {
   Pencil,
   Plus,
 } from "lucide-react"
+import { IUserSession } from "../../authentication/authTypes"
+import authApi from "../../authentication/authApi"
 
 const StaffManagement = () => {
   const [staffs, setStaffs] = useState<IStaff[]>([])
   const [manager, setManager] = useState<IStaff | null>(null)
+  const [me, setMe] = useState<IUserSession | null>(null)
 
   const selectedStoreStaffIds = useSelector(selectSelectedStoreStaffIds)
   const selectedManagerId = useSelector(selectSelectedManagerId)
@@ -58,6 +61,14 @@ const StaffManagement = () => {
     }
   }, [activePopUp, selectedStoreStaffIds, selectedManagerId])
 
+  useEffect(() => {
+    const fetchData = async () => {
+      const meDB = await authApi.getMeInfo()
+      setMe(meDB)
+    }
+    fetchData()
+  }, [])
+
   const handleCreateStaff = () => navigate("/management/addstaff")
   const handleViewStaff = (staffId: string) =>
     navigate(`/management/information/${staffId}`)
@@ -79,12 +90,14 @@ const StaffManagement = () => {
           >
             <ArrowLeft className="w-4 h-4" /> Quay về Store
           </p>
+          {/* {me && me.role === "storeManager" && ( */}
           <button
             onClick={handleCreateStaff}
             className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-md text-sm flex items-center gap-2"
           >
             <Plus className="w-4 h-4" /> Tạo mới
           </button>
+          {/* )} */}
         </div>
       </div>
 

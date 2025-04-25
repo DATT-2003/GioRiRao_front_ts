@@ -38,7 +38,9 @@ const LoginPage: React.FC = () => {
         roleS.role === "storeManager" ||
         roleS.role === "staffCashier"
       ) {
-        navigate("/")
+        navigate("/management")
+      } else {
+        navigate("/profile")
       }
     } catch (error) {
       console.error("Login failed:", error)

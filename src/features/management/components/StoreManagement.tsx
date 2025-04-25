@@ -49,9 +49,9 @@ const StoreManagement = () => {
         const userInfo = await authApi.getMeInfo()
         const { role, userId } = userInfo
         setUserRole(role)
+        console.log("userInfo", userInfo)
         if (role === "storeManager" && userId) {
           const stores = await managementApi.getStoreByManagerId(userId)
-          console.log("stores", stores)
           setStores(stores)
           if (stores.length > 0) {
             const store = stores[0]
@@ -112,6 +112,7 @@ const StoreManagement = () => {
   useEffect(() => {
     const fetchStoreDetail = async () => {
       const store = stores.find(s => s._id === selectedStore)
+      console.log("store fetchStoreDetail", store)
       if (store) {
         setStoreDetail(store)
         setManager(null)
@@ -152,7 +153,6 @@ const StoreManagement = () => {
           selectedStore,
           selectedYear,
         )
-        console.log("Doanh thu theo năm:", data)
         setRevenueData(data) // data là một mảng 12 tháng, ví dụ [{month: 1, total: 1000000}, ...]
       } catch (err) {
         console.error("Lỗi khi lấy doanh thu theo năm:", err)
@@ -180,7 +180,7 @@ const StoreManagement = () => {
         Trang Web Quản Lý Cửa Hàng
       </h1>
 
-      {userRole !== "storeManager" && (
+      {userRole === "admin" && (
         <div className="grid grid-cols-4 gap-4">
           <div>
             <label className="block font-semibold">Thành phố</label>
@@ -237,7 +237,7 @@ const StoreManagement = () => {
             >
               + Tạo Cửa Hàng
             </button>
-
+            {/* 
             {storeDetail && (
               <button
                 onClick={handleUpdateStore}
@@ -245,7 +245,7 @@ const StoreManagement = () => {
               >
                 Cập Nhật
               </button>
-            )}
+            )} */}
           </div>
         </div>
       )}

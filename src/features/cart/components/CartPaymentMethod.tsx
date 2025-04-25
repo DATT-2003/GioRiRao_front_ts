@@ -27,7 +27,7 @@ const CartPaymentMethod = () => {
   useEffect(() => {
     const fetchData = async () => {
       const meDB = await authApi.getMeInfo()
-setMe(meDB)
+      setMe(meDB)
     }
     fetchData()
   }, [])

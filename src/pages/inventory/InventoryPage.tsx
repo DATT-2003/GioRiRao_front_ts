@@ -3,23 +3,25 @@ import axios from "axios"
 import { Upload } from "lucide-react"
 import inventoryApi from "../../features/inventory/inventoryApi"
 import { Ingredient } from "../../features/inventory/inventoryTypes"
+import authApi from "../../features/authentication/authApi"
+import { IUserSession } from "../../features/authentication/authTypes"
 
 const InventoryPage = () => {
   const [inventory, setInventory] = useState<Ingredient[] | null>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [storeId, setStoreId] = useState("6780d1c957dfc98e89675b55")
+  const [me, setMe] = useState<IUserSession | null>(null)
 
   useEffect(() => {
-    fetchInventory()
+    fetchData()
   }, [])
 
-  const fetchInventory = async () => {
-    try {
-      const result = await inventoryApi.getInventoryByStore(storeId)
-      setInventory(result || [])
-    } catch (err) {
-      console.error("Error fetching inventory:", err)
-    }
+  const fetchData = async () => {
+    const meDB = await authApi.getMeInfo()
+    setMe(meDB)
+    setStoreId(meDB.storeId)
+    const result = await inventoryApi.getInventoryByStore(meDB.storeId)
+    setInventory(result || [])
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +35,7 @@ const InventoryPage = () => {
 
     try {
       await inventoryApi.importGoods(storeId, selectedFile)
-      await fetchInventory()
+      await fetchData()
       setSelectedFile(null)
     } catch (err) {
       console.error("Error uploading file:", err)

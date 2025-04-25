@@ -1,14 +1,15 @@
 import {
   Home,
-  History,
   Settings,
   Bell,
   Mail,
   LogOut,
-  ShoppingCart,
   AppWindow,
+  Activity,
+  Container,
 } from "lucide-react"
 import { NavLink } from "react-router-dom"
+import authApi from "../authentication/authApi"
 
 interface NavItemProps {
   to: string
@@ -16,8 +17,7 @@ interface NavItemProps {
   onClick?: () => void
 }
 const handleLogout = () => {
-  localStorage.removeItem("isAuthenticated")
-  localStorage.removeItem("accessToken")
+  authApi.logOut()
 }
 const NavItem = ({ to, Icon, onClick }: NavItemProps) => (
   <NavLink
@@ -39,7 +39,7 @@ const Navigation = () => (
     <div className="mb-8">
       <NavLink to="/profile">
         <img
-          src="/ProfileIcon.jpg"           // hoặc đường dẫn avatar của user
+          src="/ProfileIcon.jpg"
           alt="User Avatar"
           className="w-10 h-10 rounded-full object-cover"
         />
@@ -50,10 +50,10 @@ const Navigation = () => (
     <div className="flex flex-col gap-6 flex-grow">
       <NavItem to="/" Icon={Home} />
       <NavItem to="/management" Icon={AppWindow} />
-      <NavItem to="/statistics" Icon={Mail} />
+      <NavItem to="/statistics" Icon={Activity} />
       <NavItem to="/Orderlist" Icon={Bell} />
       <NavItem to="/settings" Icon={Settings} />
-      <NavItem to="/inventories" Icon={Settings} />
+      <NavItem to="/inventories" Icon={Container} />
     </div>
 
     {/* Đẩy LogOut xuống dưới */}

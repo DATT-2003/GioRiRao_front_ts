@@ -4,7 +4,6 @@ import { fetchOrders, markAsDone } from "../../features/orderlist/orderSlice"
 import { IOrder } from "../../features/orderlist/components/orderlistTypes"
 import OrderDetailModal from "../../features/orderlist/components/OrderDetailModal"
 import authApi from "../../features/authentication/authApi"
-import { a } from "vitest/dist/suite-IbNSsUWN.js"
 
 const OrderListPage = () => {
   const dispatch = useAppDispatch()
@@ -14,11 +13,14 @@ const OrderListPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       const me = await authApi.getMeInfo()
+      console.log("me", me)
       if (me.storeId) {
         dispatch(fetchOrders(me.storeId))
+        console.log("res fetchOrders", orders)
       }
     }
     fetchData()
+    console.log("co chay khoong vay cha")
   }, [dispatch])
 
   const sortedOrders = Array.isArray(orders)

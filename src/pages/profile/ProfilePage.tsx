@@ -1,50 +1,42 @@
-import { useEffect, useState } from "react";
-import profileApi from "../../features/profile/api/profileApi";
-import authApi from "../../features/authentication/authApi";
-import { IProfile } from "../../features/profile/types/profileTypes";
-import {
-  UserCircle,
-  Mail,
-  Phone,
-  MapPin,
-  Shield,
-} from "lucide-react";
+import { useEffect, useState } from "react"
+import profileApi from "../../features/profile/api/profileApi"
+import authApi from "../../features/authentication/authApi"
+import { IProfile } from "../../features/profile/types/profileTypes"
+import { UserCircle, Mail, Phone, MapPin, Shield } from "lucide-react"
 
 export default function ProfilePage() {
-  const [profile, setProfile] = useState<IProfile | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [profile, setProfile] = useState<IProfile | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        setLoading(true);
-        const userInfo = await authApi.getMeInfo();
-        if (!userInfo) throw new Error("User info not found");
-        const { userId } = userInfo;
-        if (!userId) throw new Error("User ID not found");
+        setLoading(true)
+        const userInfo = await authApi.getMeInfo()
+        if (!userInfo) throw new Error("User info not found")
+        const { userId } = userInfo
+        if (!userId) throw new Error("User ID not found")
 
-        const profileData = await profileApi.getById(userId);
-        setProfile(profileData);
+        const profileData = await profileApi.getById(userId)
+        setProfile(profileData)
       } catch (err) {
-        console.error("Error loading profile:", err);
-        setError("Failed to load your profile information.");
+        console.error("Error loading profile:", err)
+        setError("Failed to load your profile information.")
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    fetchProfile();
-  }, []);
+    fetchProfile()
+  }, [])
 
-    if (loading || !profile) {
+  if (loading || !profile) {
     return (
       <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
-        <p className="text-lg">
-          {error ? error : "Loading your profile..."}
-        </p>
+        <p className="text-lg">{error ? error : "Loading your profile..."}</p>
       </div>
-    );
+    )
   }
 
   return (
@@ -102,5 +94,5 @@ export default function ProfilePage() {
         </div>
       </div>
     </div>
-  );
+  )
 }
