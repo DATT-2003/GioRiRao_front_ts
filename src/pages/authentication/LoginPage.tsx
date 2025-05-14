@@ -32,13 +32,10 @@ const LoginPage: React.FC = () => {
       const roleS = await authApi.getMeInfo()
       //Nếu roleS == storeManager thì lưu lại id của manager
       //Mở popup ManagementById
-      if (roleS.role === "admin") {
-        navigate("/statistics")
-      } else if (
-        roleS.role === "storeManager" ||
-        roleS.role === "staffCashier"
-      ) {
+      if (roleS.role === "admin" || roleS.role === "storeManager") {
         navigate("/management")
+      } else if (roleS.role === "staffCashier") {
+        navigate("/")
       } else {
         navigate("/profile")
       }

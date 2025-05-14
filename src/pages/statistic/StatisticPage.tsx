@@ -88,11 +88,14 @@ const StatisticPage: React.FC = () => {
   }
 
   const handleRevenueStatisticSubmit = async () => {
+    console.log("revenues handleRevenueStatisticSubmit")
     if (reData.reYear !== null && reData.reYear !== undefined) {
       const revenues = await statisticApi.getRevenueMonthOfYear(
         reData.storeId,
         reData.reYear,
       )
+
+      console.log("revenues handleRevenueStatisticSubmit", revenues)
 
       let results = []
       let labels = []
@@ -132,6 +135,8 @@ const StatisticPage: React.FC = () => {
         reData.toReDate,
       )
 
+      console.log("revenues handleRevenueStatisticSubmit date", revenues)
+
       let results = []
       let labels = []
 
@@ -169,12 +174,41 @@ const StatisticPage: React.FC = () => {
   }
 
   const handleTopStatisticSubmit = async () => {
-    if (topData.topMonth !== null && topData.topMonth !== undefined) {
+    console.log("topD nA")
+    console.log("topData.topMonth", topData.topMonth)
+    console.log("topData.topDay", topData.topDay)
+
+    if (
+      (topData.topMonth !== null && topData.topDay === undefined) ||
+      topData.topDay === null
+    ) {
+      console.log("topD month")
+
       const topD = await statisticApi.getTopTenDrinksByMonth(
         topData.storeId,
-        topData.topMonth,
+        topData.topMonth ?? 0,
         topData.topYear,
       )
+      console.log("topD month", topD)
+
+      let results = []
+      let labels = []
+      for (const d of topD) {
+        results.push(d.totalQuantity)
+        labels.push(d.drinkName)
+      }
+
+      setTopResult(results)
+      setTopLabels(labels)
+    } else if (topData.topDay !== null) {
+      console.log("topD day")
+
+      const topD = await statisticApi.getTopTenDrinksByDay(
+        topData.storeId,
+        topData.topDay,
+        topData.topYear,
+      )
+      console.log("topD day", topD)
 
       let results = []
       let labels = []
@@ -189,16 +223,20 @@ const StatisticPage: React.FC = () => {
   }
 
   const handleRevenuePredictSubmit = async () => {
-    const fromDate: Date = moment().startOf("month").toDate()
+    const fromDate: Date = moment()
+      // .subtract(1, "month")
+      .startOf("month")
+      .toDate()
     const toDate: Date = moment().endOf("month").toDate()
-
-    console.log("selectedStore", selectedStore)
 
     const pastRevenue = await statisticApi.getRevenueDayInRange(
       selectedStore,
       fromDate,
       toDate,
     )
+
+    console.log("pastRevenue", pastRevenue)
+
     const furtureRevenue = await statisticApi.getRevenueNextMonth(selectedStore)
 
     let pastRe = []
@@ -208,6 +246,10 @@ const StatisticPage: React.FC = () => {
       pastRe.push(past.revenue)
       pastLabels.push(past.day)
     }
+
+    pastLabels = pastLabels
+      .filter((label): label is number => label !== undefined)
+      .sort((a, b) => a - b)
 
     let fuRe = []
     let fuLabels = []
@@ -223,6 +265,16 @@ const StatisticPage: React.FC = () => {
     setFutureLabels(fuLabels)
     setActualValues(pastRe)
     setPredictedValues(fuRe)
+  }
+
+  const handleTrainModel = async () => {
+    await statisticApi.trainModel(selectedStore)
+    toast.success("Huấn luyện mô hình thành công!")
+  }
+
+  const handlePredict = async () => {
+    await statisticApi.predictRevenue(selectedStore)
+    toast.success("Dự đoán doanh thu thành công!")
   }
 
   return (
@@ -335,10 +387,22 @@ const StatisticPage: React.FC = () => {
 
       <div className="mt-10 border-t border-gray-700">
         <h2 className="text-3xl font-semibold text-center text-red-400 my-6">
-          Dự đoán doanh thu 1 tháng
+          Dự đoán doanh thu 7 ngày
         </h2>
 
         <div className="flex gap-4 p-4 justify-center pt-6">
+          <button
+            className="border border-gray-700 rounded-xl p-2 bg-red-200 text-gray-900 hover:bg-red-300 transition"
+            onClick={handleTrainModel}
+          >
+            Huyến Luyện Mô Hình
+          </button>
+          <button
+            className="border border-gray-700 rounded-xl p-2 bg-red-300 text-gray-900 hover:bg-red-400 transition"
+            onClick={handlePredict}
+          >
+            Tạo Dữ Liệu Dự Đoán
+          </button>
           <button
             className="border border-gray-700 rounded-xl p-2 bg-red-400 text-gray-900 hover:bg-red-500 transition"
             onClick={handleRevenuePredictSubmit}

@@ -40,6 +40,8 @@ const statisticApi = {
     const response = await api.get(
       StatisticEndpoint.getTopTenDrinksByDay(storeId, day, year),
     )
+
+    console.log("response getTopTenDrinksByDay", response)
     return response.data.drinks
   },
 
@@ -60,6 +62,21 @@ const statisticApi = {
     )
 
     return response.data.predictedRevenue.predictedRevenues
+  },
+
+  async trainModel(storeId: string): Promise<string> {
+    console.log("storeId", storeId)
+    await api.post(StatisticEndpoint.trainModel(storeId))
+
+    return "Model trained successfully"
+  },
+
+  async predictRevenue(storeId: string): Promise<string> {
+    console.log("storeId", storeId)
+
+    await api.post(StatisticEndpoint.predictRevenue(storeId))
+
+    return "Predicted revenue successfully"
   },
 }
 

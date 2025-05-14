@@ -13,6 +13,10 @@ const StatisticEndpoint = {
     `${StatisticBase}/topDrinks/month/${storeId}/${month}/${year}`,
 
   getRevenueNextMonth: (storeId: string) => `${AIBase}/month/${storeId}`,
+
+  trainModel: (storeId: string) => `${AIBase}/train/${storeId}`,
+
+  predictRevenue: (storeId: string) => `${AIBase}/predict/${storeId}`
 }
 
 export default StatisticEndpoint

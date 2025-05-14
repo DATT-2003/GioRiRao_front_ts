@@ -38,6 +38,7 @@ export const drinkSlice = createAppSlice({
       state.drinkId = action.payload
     }),
     setDrinkIdCart: create.reducer((state, action: PayloadAction<string>) => {
+      console.log("action.payload", action.payload)
       state.id = action.payload
     }),
   }),

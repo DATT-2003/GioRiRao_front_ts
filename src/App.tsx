@@ -72,7 +72,7 @@ const MainContent = () => {
           <Route
             path="/settings"
             element={
-              <ProtectedRoute allowRoles={["admin", "storeManager"]}>
+              <ProtectedRoute allowRoles={["admin"]}>
                 <SettingsPage />
               </ProtectedRoute>
             }
@@ -96,9 +96,7 @@ const MainContent = () => {
           <Route
             path="/inventories"
             element={
-              <ProtectedRoute
-                allowRoles={["storeManager", "admin", "staffBarista"]}
-              >
+              <ProtectedRoute allowRoles={["storeManager", "staffBarista"]}>
                 <InventoryPage />
               </ProtectedRoute>
             }

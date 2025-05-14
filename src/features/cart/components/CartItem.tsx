@@ -1,5 +1,9 @@
 import { useAppDispatch, useAppSelector } from "../../../app/hooks"
-import { setDrinkIdCart, setIsDrinkDetailOpen } from "../../drinks/drinkSlice"
+import {
+  setDrinkIdCart,
+  setIsDrinkDetailOpen,
+  setDrinkId,
+} from "../../drinks/drinkSlice"
 import { IDrink } from "../../drinks/drinkTypes"
 import { ITopping } from "../../topping/toppingTypes"
 import { Trash } from "lucide-react"
@@ -33,6 +37,7 @@ const CartItem = ({
   const handleDrinkClick = (id: string) => {
     if (isCartComfirmationOpen) return
     dispatch(setDrinkIdCart(id))
+    dispatch(setDrinkId(drink!._id))
     dispatch(setIsDrinkDetailOpen(true))
   }
 

@@ -4,7 +4,7 @@ import authApi from "../features/authentication/authApi"
 
 const api = axios.create({
   baseURL: "http://localhost:3001/api/v1", // Replace with your API base URL
-  timeout: 10000, // Request timeout in milliseconds
+  timeout: 50000, // Request timeout in milliseconds
   headers: {
     "Content-Type": "application/json",
   },

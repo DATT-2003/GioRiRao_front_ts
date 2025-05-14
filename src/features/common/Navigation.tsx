@@ -50,7 +50,7 @@ const Navigation = () => (
     <div className="flex flex-col gap-6 flex-grow">
       <NavItem to="/" Icon={Home} />
       <NavItem to="/management" Icon={AppWindow} />
-      <NavItem to="/statistics" Icon={Activity} />
+      {/* <NavItem to="/statistics" Icon={Activity} /> */}
       <NavItem to="/Orderlist" Icon={Bell} />
       <NavItem to="/settings" Icon={Settings} />
       <NavItem to="/inventories" Icon={Container} />
